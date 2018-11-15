@@ -47,7 +47,7 @@ func CreateCodeBuildJob(event types.Event) error {
 		},
 		Source: &codebuild.ProjectSource{
 			Type:      aws.String("GITHUB"),
-			Location:  aws.String("https://github.com/janritter/kvb-api.git"),
+			Location:  aws.String(event.RepositoryURL),
 			Buildspec: aws.String(string(res)),
 		},
 		Artifacts: &codebuild.ProjectArtifacts{

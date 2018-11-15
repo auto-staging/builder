@@ -4,6 +4,7 @@ type Event struct {
 	Repository           string            `json:"repository"`
 	Branch               string            `json:"branch"`
 	Operation            string            `json:"operation"`
+	RepositoryURL        string            `json:"repositoryUrl"`
 	EnvironmentVariables map[string]string `json:"environmentVariables"`
 }
 
