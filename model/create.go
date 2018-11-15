@@ -2,6 +2,7 @@ package model
 
 import (
 	"log"
+	"regexp"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
@@ -24,11 +25,19 @@ func CreateCodeBuildJob(event types.Event) error {
 		Phases: types.Phases{
 			Build: types.Build{
 				Commands: []string{
-					"apt-get update && apt-get install golang -y",
+					"terraform --version",
+					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"SUCCESS_CREATE\", \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
 				},
 			},
 		},
 	}
+
+	// Adapt branch name to only contain allowed characters for CodeBuild name
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		log.Fatal(err)
+	}
+	branchName := reg.ReplaceAllString(event.Branch, "-")
 
 	res, err := yaml.Marshal(buildspec)
 
@@ -36,12 +45,12 @@ func CreateCodeBuildJob(event types.Event) error {
 	log.Println(string(res))
 
 	createInput := codebuild.CreateProjectInput{
-		Name:        aws.String("auto-staging-" + event.Repository + "-" + event.Branch),
+		Name:        aws.String("auto-staging-" + event.Repository + "-" + branchName),
 		Description: aws.String("Managed by auto-staging"),
 		ServiceRole: aws.String("arn:aws:iam::171842373341:role/auto-staging-builder-codebuild-exec-role"),
 		Environment: &codebuild.ProjectEnvironment{
 			ComputeType:          aws.String("BUILD_GENERAL1_SMALL"),
-			Image:                aws.String("ubuntu:18.04"),
+			Image:                aws.String("janrtr/auto-staging-build"),
 			Type:                 aws.String("LINUX_CONTAINER"),
 			EnvironmentVariables: envVars,
 		},
