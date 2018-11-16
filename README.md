@@ -30,10 +30,7 @@
 {
   "operation": "DELETE",
   "repository": "my-app",
-  "branch": "feat/test",
-  "environmentVariables": {
-    "TF_INSTANCE_TYPE": "t2.micro"
-  }
+  "branch": "feat/test"
 }
 ```
 
