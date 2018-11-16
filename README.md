@@ -15,10 +15,11 @@
 }
 ```
 
-### After Create | CodeBuild -> Builder
+### After Create result | CodeBuild -> Builder
 ```json
 {
-  "operation": "SUCCESS_CREATE",
+  "operation": "RESULT_CREATE",
+  "success": true,
   "repository": "my-app",
   "branch": "feat/test",
 }
@@ -36,14 +37,16 @@
 }
 ```
 
-### After Delete | CodeBuild -> Builder
+### After Delete result | CodeBuild -> Builder
 ```json
 {
-  "operation": "SUCCESS_DELETE",
+  "operation": "RESULT_DELETE",
+  "success": true,
   "repository": "my-app",
   "branch": "feat/test",
 }
 ```
+
 
 ## Usage
 

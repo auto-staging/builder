@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"gitlab.com/auto-staging/builder/controller"
+	"gitlab.com/auto-staging/builder/helper"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"gitlab.com/auto-staging/builder/types"
@@ -20,9 +22,16 @@ func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 		return controller.DeleteController(event)
 	}
 
+	if event.Operation == "RESULT_CREATE" {
+		return controller.CreateResultController(event)
+	}
+
+	log.Println("UNKNOWN OPERATION")
 	return fmt.Sprintf("{\"message\": \"unknown operation\"}"), nil
 }
 
 func main() {
+	helper.Init()
+
 	lambda.Start(HandleRequest)
 }

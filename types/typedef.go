@@ -6,6 +6,11 @@ type Event struct {
 	Operation            string            `json:"operation"`
 	RepositoryURL        string            `json:"repositoryUrl"`
 	EnvironmentVariables map[string]string `json:"environmentVariables"`
+	Success              bool              `json:"success"`
+}
+
+type StatusUpdate struct {
+	Status string `json:":status"`
 }
 
 type Build struct {
