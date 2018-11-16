@@ -34,6 +34,10 @@ func DeleteResultController(event types.Event) (string, error) {
 		if err != nil {
 			return fmt.Sprintf(""), err
 		}
+		err = model.DeleteEnvironment(event)
+		if err != nil {
+			return fmt.Sprintf(""), err
+		}
 	}
 
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err

@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"gitlab.com/auto-staging/builder/helper"
 	"gitlab.com/auto-staging/builder/types"
 	yaml "gopkg.in/yaml.v2"
@@ -113,4 +114,27 @@ func SetStatusAfterDeletion(event types.Event) error {
 	}
 
 	return setStatusForEnvironment(event, status)
+}
+
+func DeleteEnvironment(event types.Event) error {
+	svc := getDynamoDbClient()
+
+	_, err := svc.DeleteItem(&dynamodb.DeleteItemInput{
+		TableName: aws.String("auto-staging-environments"),
+		Key: map[string]*dynamodb.AttributeValue{
+			"repository": {
+				S: aws.String(event.Repository),
+			},
+			"branch": {
+				S: aws.String(event.Branch),
+			},
+		},
+	})
+
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/DeleteEnvironment", "operation": "dynamodb/exec"}, 0)
+		return err
+	}
+
+	return nil
 }
