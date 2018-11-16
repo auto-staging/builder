@@ -19,7 +19,7 @@
 ```json
 {
   "operation": "RESULT_CREATE",
-  "success": true,
+  "success": 1,
   "repository": "my-app",
   "branch": "feat/test",
 }
@@ -38,7 +38,7 @@
 ```json
 {
   "operation": "RESULT_DELETE",
-  "success": true,
+  "success": 1,
   "repository": "my-app",
   "branch": "feat/test",
 }
