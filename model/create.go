@@ -1,7 +1,8 @@
 package model
 
 import (
-	"log"
+	"errors"
+	"fmt"
 	"regexp"
 
 	"gitlab.com/auto-staging/builder/helper"
@@ -39,14 +40,18 @@ func CreateCodeBuildJob(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
-		log.Fatal(err)
+		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "regex/compile"}, 0)
+		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
 	res, err := yaml.Marshal(buildspec)
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "yaml/marshal"}, 0)
+		return err
+	}
 
-	log.Println(err)
-	log.Println(string(res))
+	helper.Logger.Log(errors.New(fmt.Sprint(res)), map[string]string{"module": "model/CreateCodeBuildJob", "operation": "buildspec"}, 4)
 
 	createInput := codebuild.CreateProjectInput{
 		Name:        aws.String("auto-staging-" + event.Repository + "-" + branchName),
@@ -71,7 +76,8 @@ func CreateCodeBuildJob(event types.Event) error {
 	client := getCodeBuildClient()
 	_, err = client.CreateProject(&createInput)
 	if err != nil {
-		log.Println(err)
+		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "codebuild/create"}, 0)
+		return err
 	}
 
 	return err
