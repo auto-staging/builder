@@ -31,7 +31,9 @@ func CreateCodeBuildJob(event types.Event) error {
 			Build: types.Build{
 				Commands: []string{
 					"terraform --version",
-					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"RESULT_CREATE\", \"success\": true, \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
+				},
+				Finally: []string{
+					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"RESULT_CREATE\", \"success\": '${CODEBUILD_BUILD_SUCCEEDING}', \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
 				},
 			},
 		},
@@ -85,9 +87,9 @@ func CreateCodeBuildJob(event types.Event) error {
 
 func SetStatusAfterCreation(event types.Event) error {
 
-	status := "creation failed"
+	status := "init failed"
 
-	if event.Success {
+	if event.Success == 1 {
 		status = "running"
 	}
 

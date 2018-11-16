@@ -6,7 +6,7 @@ type Event struct {
 	Operation            string            `json:"operation"`
 	RepositoryURL        string            `json:"repositoryUrl"`
 	EnvironmentVariables map[string]string `json:"environmentVariables"`
-	Success              bool              `json:"success"`
+	Success              int               `json:"success"`
 }
 
 type StatusUpdate struct {
@@ -15,6 +15,7 @@ type StatusUpdate struct {
 
 type Build struct {
 	Commands []string
+	Finally  []string
 }
 
 type Phases struct {
