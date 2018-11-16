@@ -1,12 +1,15 @@
 package model
 
 import (
+	"errors"
+	"fmt"
 	"regexp"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	"gitlab.com/auto-staging/builder/helper"
 	"gitlab.com/auto-staging/builder/types"
+	yaml "gopkg.in/yaml.v2"
 )
 
 func DeleteCodeBuildJob(event types.Event) error {
@@ -25,6 +28,78 @@ func DeleteCodeBuildJob(event types.Event) error {
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/DeleteCodeBuildJob", "operation": "dynamodb/exec"}, 0)
 	}
+
+	return err
+}
+
+func AdaptCodeBildJobForDelete(event types.Event) error {
+	buildspec := types.Buildspec{
+		Version: "0.2",
+		Phases: types.Phases{
+			Build: types.Build{
+				Commands: []string{
+					"terraform --version",
+					"echo destroy",
+				},
+				Finally: []string{
+					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"RESULT_DESTROY\", \"success\": '${CODEBUILD_BUILD_SUCCEEDING}', \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
+				},
+			},
+		},
+	}
+
+	// Adapt branch name to only contain allowed characters for CodeBuild name
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "regex/compile"}, 0)
+		return err
+	}
+	branchName := reg.ReplaceAllString(event.Branch, "-")
+
+	res, err := yaml.Marshal(buildspec)
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "yaml/marshal"}, 0)
+		return err
+	}
+
+	helper.Logger.Log(errors.New(fmt.Sprint(string(res))), map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "buildspec"}, 4)
+
+	client := getCodeBuildClient()
+
+	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
+		Names: []*string{
+			aws.String("auto-staging-" + event.Repository + "-" + branchName),
+		},
+	})
+
+	oldProject := oldProjects.Projects[0]
+	oldProject.Source.Buildspec = aws.String(string(res))
+
+	_, err = client.UpdateProject(&codebuild.UpdateProjectInput{
+		Name:        oldProject.Name,
+		Description: oldProject.Description,
+		ServiceRole: oldProject.ServiceRole,
+		Environment: &codebuild.ProjectEnvironment{
+			ComputeType:          oldProject.Environment.ComputeType,
+			Image:                oldProject.Environment.Image,
+			Type:                 oldProject.Environment.Type,
+			EnvironmentVariables: oldProject.Environment.EnvironmentVariables,
+		},
+		Source: &codebuild.ProjectSource{
+			Type:      oldProject.Source.Type,
+			Location:  oldProject.Source.Location,
+			Buildspec: aws.String(string(res)),
+		},
+		Artifacts: &codebuild.ProjectArtifacts{
+			Type: oldProject.Artifacts.Type,
+		},
+	})
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "codebuild/update"}, 0)
+		return err
+	}
+
+	setStatusForEnvironment(event, "destroying")
 
 	return err
 }

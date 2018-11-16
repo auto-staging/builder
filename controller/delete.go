@@ -2,25 +2,38 @@ package controller
 
 import (
 	"fmt"
-	"regexp"
 
-	"gitlab.com/auto-staging/builder/helper"
 	"gitlab.com/auto-staging/builder/model"
 	"gitlab.com/auto-staging/builder/types"
 )
 
 func DeleteController(event types.Event) (string, error) {
 
-	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	err := model.AdaptCodeBildJobForDelete(event)
 	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "controller/DeleteController", "operation": "regex/compile"}, 0)
 		return fmt.Sprintf(""), err
 	}
-	event.Branch = reg.ReplaceAllString(event.Branch, "-")
 
-	err = model.DeleteCodeBuildJob(event)
+	err = model.TriggerCodeBuild(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
+	}
+
+	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+}
+
+func DeleteResultController(event types.Event) (string, error) {
+
+	err := model.SetStatusAfterDeletion(event)
+	if err != nil {
+		return fmt.Sprintf(""), err
+	}
+
+	if event.Success == 1 {
+		err = model.DeleteCodeBuildJob(event)
+		if err != nil {
+			return fmt.Sprintf(""), err
+		}
 	}
 
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err

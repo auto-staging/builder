@@ -26,6 +26,10 @@ func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 		return controller.CreateResultController(event)
 	}
 
+	if event.Operation == "RESULT_DESTROY" {
+		return controller.DeleteResultController(event)
+	}
+
 	log.Println("UNKNOWN OPERATION")
 	return fmt.Sprintf("{\"message\": \"unknown operation\"}"), nil
 }
