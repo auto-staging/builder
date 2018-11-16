@@ -1,6 +1,8 @@
 package model
 
 import (
+	"regexp"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	"gitlab.com/auto-staging/builder/helper"
@@ -10,7 +12,14 @@ import (
 func DeleteCodeBuildJob(event types.Event) error {
 	client := getCodeBuildClient()
 
-	_, err := client.DeleteProject(&codebuild.DeleteProjectInput{
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "controller/DeleteController", "operation": "regex/compile"}, 0)
+		return err
+	}
+	event.Branch = reg.ReplaceAllString(event.Branch, "-")
+
+	_, err = client.DeleteProject(&codebuild.DeleteProjectInput{
 		Name: aws.String("auto-staging-" + event.Repository + "-" + event.Branch),
 	})
 	if err != nil {
@@ -18,4 +27,15 @@ func DeleteCodeBuildJob(event types.Event) error {
 	}
 
 	return err
+}
+
+func SetStatusAfterDeletion(event types.Event) error {
+
+	status := "destroying failed"
+
+	if event.Success == 1 {
+		status = "destroyed"
+	}
+
+	return setStatusForEnvironment(event, status)
 }
