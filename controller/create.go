@@ -14,6 +14,11 @@ func CreateController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
+	err = model.TriggerCodeBuild(event)
+	if err != nil {
+		return fmt.Sprintf(""), err
+	}
+
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
