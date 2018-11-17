@@ -58,6 +58,7 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "regex/compile"}, 0)
+		setStatusForEnvironment(event, "destroying failed")
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
@@ -65,6 +66,7 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	res, err := yaml.Marshal(buildspec)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "yaml/marshal"}, 0)
+		setStatusForEnvironment(event, "destroying failed")
 		return err
 	}
 
@@ -102,6 +104,7 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	})
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "codebuild/update"}, 0)
+		setStatusForEnvironment(event, "destroying failed")
 		return err
 	}
 
