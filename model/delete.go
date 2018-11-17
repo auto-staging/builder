@@ -34,6 +34,11 @@ func DeleteCodeBuildJob(event types.Event) error {
 }
 
 func AdaptCodeBildJobForDelete(event types.Event) error {
+	err := setStatusForEnvironment(event, "destroying")
+	if err != nil {
+		return err
+	}
+
 	buildspec := types.Buildspec{
 		Version: "0.2",
 		Phases: types.Phases{
@@ -99,8 +104,6 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "codebuild/update"}, 0)
 		return err
 	}
-
-	setStatusForEnvironment(event, "destroying")
 
 	return err
 }

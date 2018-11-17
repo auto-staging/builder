@@ -14,6 +14,11 @@ import (
 )
 
 func CreateCodeBuildJob(event types.Event) error {
+	err := setStatusForEnvironment(event, "initiating")
+	if err != nil {
+		return err
+	}
+
 	envVars := []*codebuild.EnvironmentVariable{}
 	for key, value := range event.EnvironmentVariables {
 		envVars = append(envVars, &codebuild.EnvironmentVariable{
