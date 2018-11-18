@@ -72,7 +72,7 @@ func CreateCodeBuildJob(event types.Event) error {
 		},
 		Source: &codebuild.ProjectSource{
 			Type:      aws.String("GITHUB"),
-			Location:  aws.String(event.RepositoryURL),
+			Location:  aws.String(event.InfrastructureRepoUrl),
 			Buildspec: aws.String(string(res)),
 		},
 		Artifacts: &codebuild.ProjectArtifacts{

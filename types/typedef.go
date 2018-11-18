@@ -1,12 +1,12 @@
 package types
 
 type Event struct {
-	Repository           string            `json:"repository"`
-	Branch               string            `json:"branch"`
-	Operation            string            `json:"operation"`
-	RepositoryURL        string            `json:"repositoryUrl"`
-	EnvironmentVariables map[string]string `json:"environmentVariables"`
-	Success              int               `json:"success"`
+	Repository            string            `json:"repository"`
+	Branch                string            `json:"branch"`
+	Operation             string            `json:"operation"`
+	InfrastructureRepoUrl string            `json:"infrastructureRepoUrl"`
+	EnvironmentVariables  map[string]string `json:"environmentVariables"`
+	Success               int               `json:"success"`
 }
 
 type StatusUpdate struct {

@@ -95,7 +95,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		},
 		Source: &codebuild.ProjectSource{
 			Type:      oldProject.Source.Type,
-			Location:  aws.String(event.RepositoryURL),
+			Location:  aws.String(event.InfrastructureRepoUrl),
 			Buildspec: oldProject.Source.Buildspec,
 		},
 		Artifacts: &codebuild.ProjectArtifacts{
