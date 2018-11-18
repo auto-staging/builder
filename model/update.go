@@ -1,7 +1,10 @@
 package model
 
 import (
+	"regexp"
+
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/codebuild"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"gitlab.com/auto-staging/builder/helper"
@@ -43,6 +46,65 @@ func setStatusForEnvironment(event types.Event, status string) error {
 	_, err = svc.UpdateItem(input)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/setStatusForEnvironment", "operation": "dynamodb/exec"}, 0)
+		return err
+	}
+
+	return err
+}
+
+func AdaptCodeBildJobForUpdate(event types.Event) error {
+	err := setStatusForEnvironment(event, "updating")
+	if err != nil {
+		return err
+	}
+	// Adapt branch name to only contain allowed characters for CodeBuild name
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "regex/compile"}, 0)
+		setStatusForEnvironment(event, "updating failed")
+		return err
+	}
+	branchName := reg.ReplaceAllString(event.Branch, "-")
+
+	client := getCodeBuildClient()
+	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
+		Names: []*string{
+			aws.String("auto-staging-" + event.Repository + "-" + branchName),
+		},
+	})
+	oldProject := oldProjects.Projects[0]
+
+	envVars := []*codebuild.EnvironmentVariable{}
+	for key, value := range event.EnvironmentVariables {
+		envVars = append(envVars, &codebuild.EnvironmentVariable{
+			Name:  aws.String(key),
+			Type:  aws.String("PLAINTEXT"),
+			Value: aws.String(value),
+		})
+	}
+
+	_, err = client.UpdateProject(&codebuild.UpdateProjectInput{
+		Name:        oldProject.Name,
+		Description: oldProject.Description,
+		ServiceRole: oldProject.ServiceRole,
+		Environment: &codebuild.ProjectEnvironment{
+			ComputeType:          oldProject.Environment.ComputeType,
+			Image:                oldProject.Environment.Image,
+			Type:                 oldProject.Environment.Type,
+			EnvironmentVariables: envVars,
+		},
+		Source: &codebuild.ProjectSource{
+			Type:      oldProject.Source.Type,
+			Location:  aws.String(event.RepositoryURL),
+			Buildspec: oldProject.Source.Buildspec,
+		},
+		Artifacts: &codebuild.ProjectArtifacts{
+			Type: oldProject.Artifacts.Type,
+		},
+	})
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "codebuild/update"}, 0)
+		setStatusForEnvironment(event, "updating failed")
 		return err
 	}
 

@@ -22,6 +22,10 @@ func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 		return controller.DeleteController(event)
 	}
 
+	if event.Operation == "UPDATE" {
+		return controller.UpdateController(event)
+	}
+
 	if event.Operation == "RESULT_CREATE" {
 		return controller.CreateResultController(event)
 	}

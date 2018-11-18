@@ -25,6 +25,29 @@
 }
 ```
 
+### Update | Tower -> Builder
+```json
+{
+  "operation": "UPDATE",
+  "repository": "my-app",
+  "branch": "feat/test",
+  "repoUrl": "https://github.com/username/repository.git",
+  "environmentVariables": {
+    "TF_INSTANCE_TYPE": "t2.micro"
+  }
+}
+```
+
+### After Update result | CodeBuild -> Builder
+```json
+{
+  "operation": "RESULT_UPDATE",
+  "success": 1,
+  "repository": "my-app",
+  "branch": "feat/test",
+}
+```
+
 ### Delete | Tower -> Builder
 ```json
 {
