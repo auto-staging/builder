@@ -21,3 +21,13 @@ func UpdateController(event types.Event) (string, error) {
 
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
+
+func UpdateResultController(event types.Event) (string, error) {
+
+	err := model.SetStatusAfterUpdate(event)
+	if err != nil {
+		return fmt.Sprintf(""), err
+	}
+
+	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+}

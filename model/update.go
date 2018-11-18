@@ -110,3 +110,14 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 
 	return err
 }
+
+func SetStatusAfterUpdate(event types.Event) error {
+
+	status := "updating failed"
+
+	if event.Success == 1 {
+		status = "running"
+	}
+
+	return setStatusForEnvironment(event, status)
+}
