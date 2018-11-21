@@ -57,14 +57,41 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	if err != nil {
 		return err
 	}
+
+	envVars := []*codebuild.EnvironmentVariable{}
+	// Set default variables
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_branch_raw"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(event.Branch),
+	})
+
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "regex/compile"}, 0)
-		setStatusForEnvironment(event, "updating failed")
+		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "regex/compile"}, 0)
+		setStatusForEnvironment(event, "initiating failed")
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_branch"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(branchName),
+	})
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_repository"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(event.Repository),
+	})
+
+	for key, value := range event.EnvironmentVariables {
+		envVars = append(envVars, &codebuild.EnvironmentVariable{
+			Name:  aws.String(key),
+			Type:  aws.String("PLAINTEXT"),
+			Value: aws.String(value),
+		})
+	}
 
 	client := getCodeBuildClient()
 	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
@@ -73,15 +100,6 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		},
 	})
 	oldProject := oldProjects.Projects[0]
-
-	envVars := []*codebuild.EnvironmentVariable{}
-	for key, value := range event.EnvironmentVariables {
-		envVars = append(envVars, &codebuild.EnvironmentVariable{
-			Name:  aws.String(key),
-			Type:  aws.String("PLAINTEXT"),
-			Value: aws.String(value),
-		})
-	}
 
 	_, err = client.UpdateProject(&codebuild.UpdateProjectInput{
 		Name:        oldProject.Name,

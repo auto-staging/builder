@@ -44,8 +44,8 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 		Phases: types.Phases{
 			Build: types.Build{
 				Commands: []string{
-					"terraform --version",
-					"echo destroy",
+					"make auto-staging-init",
+					"make auto-staging-destroy",
 				},
 				Finally: []string{
 					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"RESULT_DESTROY\", \"success\": '${CODEBUILD_BUILD_SUCCEEDING}', \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
