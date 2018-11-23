@@ -19,14 +19,6 @@ func CreateCodeBuildJob(event types.Event) error {
 		return err
 	}
 
-	envVars := []*codebuild.EnvironmentVariable{}
-	// Set default variables
-	envVars = append(envVars, &codebuild.EnvironmentVariable{
-		Name:  aws.String("TF_VAR_branch_raw"),
-		Type:  aws.String("PLAINTEXT"),
-		Value: aws.String(event.Branch),
-	})
-
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -35,6 +27,14 @@ func CreateCodeBuildJob(event types.Event) error {
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
+
+	envVars := []*codebuild.EnvironmentVariable{}
+	// Set default variables
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_branch_raw"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(event.Branch),
+	})
 	envVars = append(envVars, &codebuild.EnvironmentVariable{
 		Name:  aws.String("TF_VAR_branch"),
 		Type:  aws.String("PLAINTEXT"),
@@ -46,11 +46,11 @@ func CreateCodeBuildJob(event types.Event) error {
 		Value: aws.String(event.Repository),
 	})
 
-	for key, value := range event.EnvironmentVariables {
+	for _, environmentVariable := range event.EnvironmentVariables {
 		envVars = append(envVars, &codebuild.EnvironmentVariable{
-			Name:  aws.String(key),
-			Type:  aws.String("PLAINTEXT"),
-			Value: aws.String(value),
+			Name:  aws.String(environmentVariable.Name),
+			Type:  aws.String(environmentVariable.Type),
+			Value: aws.String(environmentVariable.Value),
 		})
 	}
 
@@ -81,7 +81,7 @@ func CreateCodeBuildJob(event types.Event) error {
 	createInput := codebuild.CreateProjectInput{
 		Name:        aws.String("auto-staging-" + event.Repository + "-" + branchName),
 		Description: aws.String("Managed by auto-staging"),
-		ServiceRole: aws.String("arn:aws:iam::171842373341:role/auto-staging-builder-codebuild-exec-role"),
+		ServiceRole: aws.String(event.CodeBuildRoleARN),
 		Environment: &codebuild.ProjectEnvironment{
 			ComputeType:          aws.String("BUILD_GENERAL1_SMALL"),
 			Image:                aws.String("janrtr/auto-staging-build"),
@@ -90,7 +90,7 @@ func CreateCodeBuildJob(event types.Event) error {
 		},
 		Source: &codebuild.ProjectSource{
 			Type:      aws.String("GITHUB"),
-			Location:  aws.String(event.InfrastructureRepoUrl),
+			Location:  aws.String(event.InfrastructureRepoURL),
 			Buildspec: aws.String(string(res)),
 		},
 		Artifacts: &codebuild.ProjectArtifacts{

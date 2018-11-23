@@ -58,14 +58,6 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		return err
 	}
 
-	envVars := []*codebuild.EnvironmentVariable{}
-	// Set default variables
-	envVars = append(envVars, &codebuild.EnvironmentVariable{
-		Name:  aws.String("TF_VAR_branch_raw"),
-		Type:  aws.String("PLAINTEXT"),
-		Value: aws.String(event.Branch),
-	})
-
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -73,6 +65,14 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		setStatusForEnvironment(event, "initiating failed")
 		return err
 	}
+
+	envVars := []*codebuild.EnvironmentVariable{}
+	// Set default variables
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_branch_raw"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(event.Branch),
+	})
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 	envVars = append(envVars, &codebuild.EnvironmentVariable{
 		Name:  aws.String("TF_VAR_branch"),
@@ -85,11 +85,11 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		Value: aws.String(event.Repository),
 	})
 
-	for key, value := range event.EnvironmentVariables {
+	for _, environmentVariable := range event.EnvironmentVariables {
 		envVars = append(envVars, &codebuild.EnvironmentVariable{
-			Name:  aws.String(key),
-			Type:  aws.String("PLAINTEXT"),
-			Value: aws.String(value),
+			Name:  aws.String(environmentVariable.Name),
+			Type:  aws.String(environmentVariable.Type),
+			Value: aws.String(environmentVariable.Value),
 		})
 	}
 
@@ -104,7 +104,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	_, err = client.UpdateProject(&codebuild.UpdateProjectInput{
 		Name:        oldProject.Name,
 		Description: oldProject.Description,
-		ServiceRole: oldProject.ServiceRole,
+		ServiceRole: aws.String(event.CodeBuildRoleARN),
 		Environment: &codebuild.ProjectEnvironment{
 			ComputeType:          oldProject.Environment.ComputeType,
 			Image:                oldProject.Environment.Image,
@@ -113,7 +113,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		},
 		Source: &codebuild.ProjectSource{
 			Type:      oldProject.Source.Type,
-			Location:  aws.String(event.InfrastructureRepoUrl),
+			Location:  aws.String(event.InfrastructureRepoURL),
 			Buildspec: oldProject.Source.Buildspec,
 		},
 		Artifacts: &codebuild.ProjectArtifacts{
