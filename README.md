@@ -8,8 +8,15 @@
   "operation": "CREATE",
   "repository": "my-app",
   "branch": "feat/test",
+  "codeBuildRoleARN": "arn:aws:iam::123456789012:role/RepositoryCodeBuildRole",
   "infrastructureRepoUrl": "https://github.com/username/repository.git",
-  "environmentVariables": {
+  "environmentVariables": [
+    {
+      "name": "TF_VAR_instance_type",
+      "type": "PLAINTEXT",
+      
+    }
+  ]
     "TF_INSTANCE_TYPE": "t2.micro"
   }
 }
@@ -31,6 +38,7 @@
   "operation": "UPDATE",
   "repository": "my-app",
   "branch": "feat/test",
+  "codeBuildRoleARN": "arn:aws:iam::123456789012:role/RepositoryCodeBuildRole",
   "infrastructureRepoUrl": "https://github.com/username/repository.git",
   "environmentVariables": {
     "TF_INSTANCE_TYPE": "t2.micro"
