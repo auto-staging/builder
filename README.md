@@ -14,11 +14,9 @@
     {
       "name": "TF_VAR_instance_type",
       "type": "PLAINTEXT",
-      
+      "value": "t2.micro"
     }
   ]
-    "TF_INSTANCE_TYPE": "t2.micro"
-  }
 }
 ```
 
@@ -40,9 +38,13 @@
   "branch": "feat/test",
   "codeBuildRoleARN": "arn:aws:iam::123456789012:role/RepositoryCodeBuildRole",
   "infrastructureRepoUrl": "https://github.com/username/repository.git",
-  "environmentVariables": {
-    "TF_INSTANCE_TYPE": "t2.micro"
-  }
+  "environmentVariables": [
+    {
+      "name": "TF_VAR_instance_type",
+      "type": "PLAINTEXT",
+      "value": "t2.micro"
+    }
+  ]
 }
 ```
 
