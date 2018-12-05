@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"gitlab.com/auto-staging/builder/controller"
 	"gitlab.com/auto-staging/builder/helper"
@@ -14,32 +13,28 @@ import (
 
 func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 
-	if event.Operation == "CREATE" {
+	switch event.Operation {
+	case "CREATE":
 		return controller.CreateController(event)
-	}
 
-	if event.Operation == "DELETE" {
+	case "DELETE":
 		return controller.DeleteController(event)
-	}
 
-	if event.Operation == "UPDATE" {
+	case "UPDATE":
 		return controller.UpdateController(event)
-	}
 
-	if event.Operation == "RESULT_CREATE" {
+	case "RESULT_CREATE":
 		return controller.CreateResultController(event)
-	}
 
-	if event.Operation == "RESULT_DESTROY" {
+	case "RESULT_DESTROY":
 		return controller.DeleteResultController(event)
-	}
 
-	if event.Operation == "RESULT_UPDATE" {
+	case "RESULT_UPDATE":
 		return controller.UpdateResultController(event)
-	}
 
-	log.Println("UNKNOWN OPERATION")
-	return fmt.Sprintf("{\"message\": \"unknown operation\"}"), nil
+	default:
+		return fmt.Sprintf("{\"message\": \"unknown operation\"}"), nil
+	}
 }
 
 func main() {
