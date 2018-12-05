@@ -3,6 +3,7 @@
 ## Request Bodys
 
 ### Create | Tower -> Builder
+
 ```json
 {
   "operation": "CREATE",
@@ -21,6 +22,7 @@
 ```
 
 ### After Create result | CodeBuild -> Builder
+
 ```json
 {
   "operation": "RESULT_CREATE",
@@ -31,6 +33,7 @@
 ```
 
 ### Update | Tower -> Builder
+
 ```json
 {
   "operation": "UPDATE",
@@ -49,6 +52,7 @@
 ```
 
 ### After Update result | CodeBuild -> Builder
+
 ```json
 {
   "operation": "RESULT_UPDATE",
@@ -59,6 +63,7 @@
 ```
 
 ### Delete | Tower -> Builder
+
 ```json
 {
   "operation": "DELETE",
@@ -68,6 +73,7 @@
 ```
 
 ### After Delete result | CodeBuild -> Builder
+
 ```json
 {
   "operation": "RESULT_DELETE",
@@ -77,22 +83,27 @@
 }
 ```
 
-
 ## Usage
 
 #### Install dependencies
-```
+
+```bash
 make prepare
 ```
+
 #### Run application
-```
+
+```bash
 make run
 ```
+
 #### Build binary
-```
+
+```bash
 make build
 ```
-compiles to bin folder 
+
+compiles to bin folder
 
 ## License and Author
 
