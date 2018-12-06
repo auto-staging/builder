@@ -25,7 +25,6 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/UpdateCloudWatchEventsForEnvironment", "operation": "regex/compile"}, 0)
-		setStatusForEnvironment(event, "initiating failed")
 		return err
 	}
 
