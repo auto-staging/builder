@@ -111,17 +111,7 @@
 {
   "operation": "DELETE_SCHEDULE",
   "repository": "my-app",
-  "branch": "feat/test",
-  "shutdownSchedules": [
-    {
-      "cron": "(0 12 * * ? *)"
-    }
-  ],
-  "startupSchedules": [
-    {
-      "cron": "(0 11 * * ? *)"
-    }
-  ],
+  "branch": "feat/test"
 }
 ```
 
