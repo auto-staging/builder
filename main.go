@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/aws/aws-lambda-go/lambda"
 	"gitlab.com/auto-staging/builder/controller"
 	"gitlab.com/auto-staging/builder/helper"
 
-	"github.com/aws/aws-lambda-go/lambda"
 	"gitlab.com/auto-staging/builder/types"
 )
 
@@ -31,6 +31,9 @@ func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 
 	case "RESULT_UPDATE":
 		return controller.UpdateResultController(event)
+
+	case "UPDATE_SCHEDULE":
+		return controller.UpdateCloudWatchEventController(event)
 
 	default:
 		return fmt.Sprintf("{\"message\": \"unknown operation\"}"), nil

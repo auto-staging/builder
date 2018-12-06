@@ -14,6 +14,12 @@ type Event struct {
 	CodeBuildRoleARN      string                `json:"codeBuildRoleARN"`
 	EnvironmentVariables  []EnvironmentVariable `json:"environmentVariables"`
 	Success               int                   `json:"success"`
+	ShutdownSchedules     []TimeSchedule        `json:"shutdownSchedules"`
+	StartupSchedules      []TimeSchedule        `json:"startupSchedules"`
+}
+
+type TimeSchedule struct {
+	Cron string `json:"cron"`
 }
 
 type StatusUpdate struct {

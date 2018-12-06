@@ -31,3 +31,13 @@ func UpdateResultController(event types.Event) (string, error) {
 
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
+
+func UpdateCloudWatchEventController(event types.Event) (string, error) {
+
+	err := model.UpdateCloudWatchEvents(event)
+	if err != nil {
+		return fmt.Sprintf(""), err
+	}
+
+	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+}
