@@ -22,6 +22,16 @@ func DeleteController(event types.Event) (string, error) {
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
+func DeleteCloudWatchEventController(event types.Event) (string, error) {
+
+	err := model.DeleteCloudWatchEvents(event)
+	if err != nil {
+		return fmt.Sprintf(""), err
+	}
+
+	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+}
+
 func DeleteResultController(event types.Event) (string, error) {
 
 	err := model.SetStatusAfterDeletion(event)
