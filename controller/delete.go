@@ -17,7 +17,7 @@ func DeleteController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	if status.Status != "running" && status.Status != "stopped" && status.Status != "initiating failed" {
+	if status.Status != "running" && status.Status != "stopped" && status.Status != "initiating failed" && status.Status != "destroying failed" {
 		helper.Logger.Log(errors.New("Can't delete environment in status = "+status.Status), map[string]string{"module": "controller/DeleteController", "operation": "statusCheck"}, 0)
 		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't delete environment in current status\"}")), err
 	}
