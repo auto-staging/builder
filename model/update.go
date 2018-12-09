@@ -62,7 +62,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "regex/compile"}, 0)
-		setStatusForEnvironment(event, "initiating failed")
+		setStatusForEnvironment(event, "updating failed")
 		return err
 	}
 

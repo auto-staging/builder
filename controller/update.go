@@ -1,15 +1,27 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 
+	"gitlab.com/auto-staging/builder/helper"
 	"gitlab.com/auto-staging/builder/model"
 	"gitlab.com/auto-staging/builder/types"
 )
 
 func UpdateController(event types.Event) (string, error) {
+	status := types.Status{}
+	err := model.GetStatusForEnvironment(event, &status)
+	if err != nil {
+		return fmt.Sprintf(""), err
+	}
 
-	err := model.AdaptCodeBildJobForUpdate(event)
+	if status.Status != "running" && status.Status != "stopped" && status.Status != "updating failed" {
+		helper.Logger.Log(errors.New("Can't update environment in status = "+status.Status), map[string]string{"module": "controller/DeleteController", "operation": "statusCheck"}, 0)
+		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't update environment in current status\"}")), err
+	}
+
+	err = model.AdaptCodeBildJobForUpdate(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

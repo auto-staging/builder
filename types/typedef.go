@@ -26,6 +26,10 @@ type StatusUpdate struct {
 	Status string `json:":status"`
 }
 
+type Status struct {
+	Status string `json:"status"`
+}
+
 type Build struct {
 	Commands []string
 	Finally  []string
