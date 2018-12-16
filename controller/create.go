@@ -18,7 +18,7 @@ func CreateController(event types.Event) (string, error) {
 	}
 
 	if status.Status != "pending" {
-		helper.Logger.Log(errors.New("Can't create environment in status = "+status.Status), map[string]string{"module": "controller/DeleteController", "operation": "statusCheck"}, 0)
+		helper.Logger.Log(errors.New("Can't create environment in status = "+status.Status), map[string]string{"module": "controller/CreateController", "operation": "statusCheck"}, 0)
 		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't create environment in current status\"}")), err
 	}
 

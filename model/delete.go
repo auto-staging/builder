@@ -18,7 +18,7 @@ func DeleteCodeBuildJob(event types.Event) error {
 
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "controller/DeleteController", "operation": "regex/compile"}, 0)
+		helper.Logger.Log(err, map[string]string{"module": "controller/DeleteCodeBuildJob", "operation": "regex/compile"}, 0)
 		return err
 	}
 	event.Branch = reg.ReplaceAllString(event.Branch, "-")
