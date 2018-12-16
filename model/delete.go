@@ -80,6 +80,12 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 		},
 	})
 
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "aws/batchGetProjects"}, 0)
+		setStatusForEnvironment(event, "destroying failed")
+		return err
+	}
+
 	oldProject := oldProjects.Projects[0]
 	oldProject.Source.Buildspec = aws.String(string(res))
 
