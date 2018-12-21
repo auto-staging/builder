@@ -1,13 +1,13 @@
 package model
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/pkg/errors"
 	"gitlab.com/auto-staging/builder/helper"
 	"gitlab.com/auto-staging/builder/types"
 	yaml "gopkg.in/yaml.v2"
@@ -39,21 +39,6 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 		return err
 	}
 
-	buildspec := types.Buildspec{
-		Version: "0.2",
-		Phases: types.Phases{
-			Build: types.Build{
-				Commands: []string{
-					"make auto-staging-init",
-					"make auto-staging-destroy",
-				},
-				Finally: []string{
-					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"RESULT_DESTROY\", \"success\": '${CODEBUILD_BUILD_SUCCEEDING}', \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
-				},
-			},
-		},
-	}
-
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -62,15 +47,6 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
-
-	res, err := yaml.Marshal(buildspec)
-	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "yaml/marshal"}, 0)
-		setStatusForEnvironment(event, "destroying failed")
-		return err
-	}
-
-	helper.Logger.Log(errors.New(fmt.Sprint(string(res))), map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "buildspec"}, 4)
 
 	client := getCodeBuildClient()
 
@@ -87,7 +63,28 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	}
 
 	oldProject := oldProjects.Projects[0]
-	oldProject.Source.Buildspec = aws.String(string(res))
+
+	buildspec := types.Buildspec{
+		Version: "0.2",
+		Phases: types.Phases{
+			Build: types.Build{
+				Commands: []string{
+					"make auto-staging-init",
+					"make auto-staging-destroy",
+				},
+				Finally: []string{
+					"aws lambda invoke --function-name auto-staging-builder --invocation-type Event --payload '{ \"operation\": \"RESULT_DESTROY\", \"success\": '${CODEBUILD_BUILD_SUCCEEDING}', \"repository\": \"" + event.Repository + "\", \"branch\": \"" + event.Branch + "\" }'  /dev/null",
+				},
+			},
+		},
+	}
+	marshaledBuildspec, err := yaml.Marshal(buildspec)
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "yaml/marshal"}, 0)
+		setStatusForEnvironment(event, "destroying failed")
+		return err
+	}
+	helper.Logger.Log(errors.New(fmt.Sprint(string(marshaledBuildspec))), map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "buildspec"}, 4)
 
 	_, err = client.UpdateProject(&codebuild.UpdateProjectInput{
 		Name:        oldProject.Name,
@@ -102,7 +99,7 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 		Source: &codebuild.ProjectSource{
 			Type:      oldProject.Source.Type,
 			Location:  oldProject.Source.Location,
-			Buildspec: aws.String(string(res)),
+			Buildspec: aws.String(string(marshaledBuildspec)),
 		},
 		Artifacts: &codebuild.ProjectArtifacts{
 			Type: oldProject.Artifacts.Type,
