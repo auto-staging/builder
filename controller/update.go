@@ -16,7 +16,7 @@ func UpdateController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	if status.Status != "running" && status.Status != "stopped" && status.Status != "updating failed" {
+	if status.Status != "running" && status.Status != "updating failed" {
 		helper.Logger.Log(errors.New("Can't update environment in status = "+status.Status), map[string]string{"module": "controller/UpdateController", "operation": "statusCheck"}, 0)
 		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't update environment in current status\"}")), err
 	}
