@@ -99,6 +99,11 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 			aws.String("auto-staging-" + event.Repository + "-" + branchName),
 		},
 	})
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "codebuild/batchGetProjects"}, 0)
+		setStatusForEnvironment(event, "updating failed")
+		return err
+	}
 	oldProject := oldProjects.Projects[0]
 
 	_, err = client.UpdateProject(&codebuild.UpdateProjectInput{
