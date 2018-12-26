@@ -11,6 +11,7 @@ import (
 	"gitlab.com/auto-staging/builder/types"
 )
 
+// HandleRequest redirects the request to the matching controller based on the operation in the event.
 func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 
 	switch event.Operation {
