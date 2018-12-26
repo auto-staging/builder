@@ -17,11 +17,11 @@ import (
 	"gitlab.com/auto-staging/builder/types"
 )
 
+// UpdateCloudWatchEvents removes all existing CloudWatchEvents rules for the Environment and creates new shutdown and startup schedules according
+// to the Environment configuration. This function is called by the controller.
+// If an error occurs the error gets logged and the returned.
 func UpdateCloudWatchEvents(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
-
-	fmt.Println(event)
-
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/UpdateCloudWatchEventsForEnvironment", "operation": "regex/compile"}, 0)
@@ -31,7 +31,6 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
 	// Startup schedules
-
 	fmt.Println("Startup schedules - Target")
 	fmt.Println(event.StartupSchedules)
 
@@ -46,7 +45,6 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	}
 
 	// Shutdown schedules
-
 	fmt.Println("Shutdown schedules - Target")
 	fmt.Println(event.ShutdownSchedules)
 
@@ -122,6 +120,8 @@ func removeRulesWithTarget(repository, branch, branchRaw, action string) error {
 	return nil
 }
 
+// createRulesWithTarget creates a new CloudWatcheEvents rule with the Scheduler Lambda Funktion as target.
+// If an error occurs the error gets logged and the returned.
 func createRulesWithTarget(repository, branch, branchRaw, action string, schedule []types.TimeSchedule) error {
 	fmt.Println("CREATE NEW SCHEDULES for " + action)
 
