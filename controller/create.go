@@ -9,6 +9,8 @@ import (
 	"gitlab.com/auto-staging/builder/types"
 )
 
+// CreateController is the controller for the CREATE action.
+// First the status of the Environment gets checked, if the status is "pending" the CodBuild Job gets created and then triggered.
 func CreateController(event types.Event) (string, error) {
 
 	status := types.Status{}
@@ -35,6 +37,8 @@ func CreateController(event types.Event) (string, error) {
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
+// CreateResultController is the controller for the RESULT_CREATE action.
+// The status of the Environment gets set according to the result of the CodeBuild Job.
 func CreateResultController(event types.Event) (string, error) {
 
 	err := model.SetStatusAfterCreation(event)
