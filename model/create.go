@@ -13,6 +13,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+// CreateCodeBuildJob creates the CodebuildJob via AWS SDK with the configuration defined for the Environment.
+// If an error occurs the error gets logged and the returned.
 func CreateCodeBuildJob(event types.Event) error {
 	err := setStatusForEnvironment(event, "initiating")
 	if err != nil {
@@ -109,6 +111,9 @@ func CreateCodeBuildJob(event types.Event) error {
 	return err
 }
 
+// SetStatusAfterCreation checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
+// gets set to "running" otherwise it gets set to "initating failed".
+// If an error occurs the error gets logged and the returned.
 func SetStatusAfterCreation(event types.Event) error {
 
 	status := "initiating failed"
