@@ -22,13 +22,12 @@ func DeleteCloudWatchEvents(event types.Event) error {
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
 	// Startup schedules
-	err = removeRulesWithTarget(event.Repository, branchName, event.Branch, "start")
+	err = removeRulesWithTarget(event.Repository, branchName, "start")
 	if err != nil {
 		return err
 	}
 
 	// Shutdown schedules
-	err = removeRulesWithTarget(event.Repository, branchName, event.Branch, "stop")
-
+	err = removeRulesWithTarget(event.Repository, branchName, "stop")
 	return err
 }

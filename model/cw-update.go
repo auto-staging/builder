@@ -34,7 +34,7 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	fmt.Println("Startup schedules - Target")
 	fmt.Println(event.StartupSchedules)
 
-	err = removeRulesWithTarget(event.Repository, branchName, event.Branch, "start")
+	err = removeRulesWithTarget(event.Repository, branchName, "start")
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	fmt.Println("Shutdown schedules - Target")
 	fmt.Println(event.ShutdownSchedules)
 
-	err = removeRulesWithTarget(event.Repository, branchName, event.Branch, "stop")
+	err = removeRulesWithTarget(event.Repository, branchName, "stop")
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	return err
 }
 
-func removeRulesWithTarget(repository, branch, branchRaw, action string) error {
+func removeRulesWithTarget(repository, branch, action string) error {
 	fmt.Println("REMOVE SCHEDULES for " + action)
 
 	client := getCloudWatchEventsClient()
