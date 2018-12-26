@@ -9,6 +9,9 @@ import (
 	"gitlab.com/auto-staging/builder/types"
 )
 
+// DeleteController is the controller function for the DELETE action.
+// First the status of the Environment gets checked, if the status is "running", "stopped", "initiating failed", "destroyed failed"
+// the CodBuild Job gets adapted to delete the Environment and then triggered.
 func DeleteController(event types.Event) (string, error) {
 
 	status := types.Status{}
@@ -35,6 +38,8 @@ func DeleteController(event types.Event) (string, error) {
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
+// DeleteCloudWatchEventController is the controller function for the DELETE_SCHEDULE action.
+// It calls the function to delete all CloudWatchEvents rules for the Environment.
 func DeleteCloudWatchEventController(event types.Event) (string, error) {
 
 	err := model.DeleteCloudWatchEvents(event)
@@ -45,6 +50,8 @@ func DeleteCloudWatchEventController(event types.Event) (string, error) {
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
+// DeleteResultController is the controller function for the RESULT_DESTROY action.
+// The status of the Environment gets set according to the result of the CodeBuild Job and the CodeBuild Job and Environment get removed.
 func DeleteResultController(event types.Event) (string, error) {
 
 	err := model.SetStatusAfterDeletion(event)

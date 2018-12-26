@@ -9,6 +9,9 @@ import (
 	"gitlab.com/auto-staging/builder/types"
 )
 
+// UpdateController is the controller for the UPDATE action.
+// First the status of the Environment gets checked, if the status is "running" or "updating failed" the CodBuild Job gets adapted with the updated
+// configuration and then triggered.
 func UpdateController(event types.Event) (string, error) {
 	status := types.Status{}
 	err := model.GetStatusForEnvironment(event, &status)
@@ -34,6 +37,8 @@ func UpdateController(event types.Event) (string, error) {
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
+// UpdateResultController is the controller for the RESULT_UPDATE action.
+// The status of the Environment gets set according to the result of the CodeBuild Job.
 func UpdateResultController(event types.Event) (string, error) {
 
 	err := model.SetStatusAfterUpdate(event)
@@ -44,6 +49,8 @@ func UpdateResultController(event types.Event) (string, error) {
 	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
 }
 
+// UpdateCloudWatchEventController is the controller for the UPDATE_SCHEDULE action.
+// It calls the function to update all CloudWatchEvents rules for the Environment.
 func UpdateCloudWatchEventController(event types.Event) (string, error) {
 
 	err := model.UpdateCloudWatchEvents(event)
