@@ -13,6 +13,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+// DeleteCodeBuildJob removes the CodeBuild Job for the Environment specified in the Event struct.
+// If an error occurs the error gets logged and the returned.
 func DeleteCodeBuildJob(event types.Event) error {
 	client := getCodeBuildClient()
 
@@ -33,6 +35,8 @@ func DeleteCodeBuildJob(event types.Event) error {
 	return err
 }
 
+// AdaptCodeBildJobForDelete adapts the CodeBuild buildspec to delete an Environment infrastructure.
+// If an error occurs the error gets logged and the returned.
 func AdaptCodeBildJobForDelete(event types.Event) error {
 	err := setStatusForEnvironment(event, "destroying")
 	if err != nil {
@@ -114,6 +118,9 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	return err
 }
 
+// SetStatusAfterDeletion checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
+// gets set to "destroyed" otherwise it gets set to "destroying failed".
+// If an error occurs the error gets logged and the returned.
 func SetStatusAfterDeletion(event types.Event) error {
 
 	status := "destroying failed"
@@ -125,6 +132,8 @@ func SetStatusAfterDeletion(event types.Event) error {
 	return setStatusForEnvironment(event, status)
 }
 
+// DeleteEnvironment removes an Environment specified in the Event struct from DynamoDB.
+// If an error occurs the error gets logged and the returned.
 func DeleteEnvironment(event types.Event) error {
 	svc := getDynamoDbClient()
 

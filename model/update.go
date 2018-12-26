@@ -55,6 +55,8 @@ func setStatusForEnvironment(event types.Event, status string) error {
 	return err
 }
 
+// AdaptCodeBildJobForUpdate adapts the CodeBuild Job and buildspec with the updated Environment configuration (EnvironmentVariables).
+// If an error occurs the error gets logged and the returned.
 func AdaptCodeBildJobForUpdate(event types.Event) error {
 	err := setStatusForEnvironment(event, "updating")
 	if err != nil {
@@ -159,6 +161,9 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	return err
 }
 
+// SetStatusAfterUpdate checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
+// gets set to "running" otherwise it gets set to "updating failed".
+// If an error occurs the error gets logged and the returned.
 func SetStatusAfterUpdate(event types.Event) error {
 
 	status := "updating failed"

@@ -8,6 +8,8 @@ import (
 	"gitlab.com/auto-staging/builder/types"
 )
 
+// GetStatusForEnvironment gets the status for an Environment specified in the Event struct from DynamoDB.
+// If an error occurs the error gets logged and the returned.
 func GetStatusForEnvironment(event types.Event, status *types.Status) error {
 	svc := getDynamoDbClient()
 
@@ -32,7 +34,11 @@ func GetStatusForEnvironment(event types.Event, status *types.Status) error {
 		return err
 	}
 
-	dynamodbattribute.UnmarshalMap(result.Item, status)
+	err = dynamodbattribute.UnmarshalMap(result.Item, status)
+	if err != nil {
+		helper.Logger.Log(err, map[string]string{"module": "model/GetStatusForEnvironment", "operation": "dynamodb/unmarshalMap"}, 0)
+		return err
+	}
 
 	return nil
 }
