@@ -83,7 +83,7 @@ func removeRulesWithTarget(repository, branch, action string) error {
 
 			if len(targetResult.Targets) != 0 {
 				fmt.Println("Deleting targets")
-				targetIds := []*string{}
+				var targetIds []*string
 
 				for a := range targetResult.Targets {
 					targetIds = append(targetIds, targetResult.Targets[a].Id)

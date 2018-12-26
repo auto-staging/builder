@@ -71,7 +71,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		return err
 	}
 
-	envVars := []*codebuild.EnvironmentVariable{}
+	var envVars []*codebuild.EnvironmentVariable
 	// Set default variables
 	envVars = append(envVars, &codebuild.EnvironmentVariable{
 		Name:  aws.String("TF_VAR_branch_raw"),

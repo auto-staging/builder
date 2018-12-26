@@ -33,7 +33,7 @@ func CreateCodeBuildJob(event types.Event) error {
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
-	envVars := []*codebuild.EnvironmentVariable{}
+	var envVars []*codebuild.EnvironmentVariable
 	// Set default variables
 	envVars = append(envVars, &codebuild.EnvironmentVariable{
 		Name:  aws.String("TF_VAR_branch_raw"),
