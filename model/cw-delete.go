@@ -29,9 +29,6 @@ func DeleteCloudWatchEvents(event types.Event) error {
 
 	// Shutdown schedules
 	err = removeRulesWithTarget(event.Repository, branchName, event.Branch, "stop")
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }

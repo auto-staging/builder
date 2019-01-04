@@ -54,11 +54,8 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	}
 
 	err = createRulesWithTarget(event.Repository, branchName, event.Branch, "stop", event.ShutdownSchedules)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }
 
 func removeRulesWithTarget(repository, branch, branchRaw, action string) error {
