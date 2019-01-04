@@ -21,7 +21,7 @@ func CreateController(event types.Event) (string, error) {
 
 	if status.Status != "pending" {
 		helper.Logger.Log(errors.New("Can't create environment in status = "+status.Status), map[string]string{"module": "controller/CreateController", "operation": "statusCheck"}, 0)
-		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't create environment in current status\"}")), err
+		return fmt.Sprint("{\"message\" : \"can't create environment in current status\"}"), err
 	}
 
 	err = model.CreateCodeBuildJob(event)
@@ -34,7 +34,7 @@ func CreateController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }
 
 // CreateResultController is the controller for the RESULT_CREATE action.
@@ -46,5 +46,5 @@ func CreateResultController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }

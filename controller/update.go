@@ -21,7 +21,7 @@ func UpdateController(event types.Event) (string, error) {
 
 	if status.Status != "running" && status.Status != "updating failed" {
 		helper.Logger.Log(errors.New("Can't update environment in status = "+status.Status), map[string]string{"module": "controller/UpdateController", "operation": "statusCheck"}, 0)
-		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't update environment in current status\"}")), err
+		return fmt.Sprint("{\"message\" : \"can't update environment in current status\"}"), err
 	}
 
 	err = model.AdaptCodeBildJobForUpdate(event)
@@ -34,7 +34,7 @@ func UpdateController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }
 
 // UpdateResultController is the controller for the RESULT_UPDATE action.
@@ -46,7 +46,7 @@ func UpdateResultController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }
 
 // UpdateCloudWatchEventController is the controller for the UPDATE_SCHEDULE action.
@@ -58,5 +58,5 @@ func UpdateCloudWatchEventController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }

@@ -22,7 +22,7 @@ func DeleteController(event types.Event) (string, error) {
 
 	if status.Status != "running" && status.Status != "stopped" && status.Status != "initiating failed" && status.Status != "destroying failed" {
 		helper.Logger.Log(errors.New("Can't delete environment in status = "+status.Status), map[string]string{"module": "controller/DeleteController", "operation": "statusCheck"}, 0)
-		return fmt.Sprintf(fmt.Sprint("{\"message\" : \"can't delete environment in current status\"}")), err
+		return fmt.Sprint("{\"message\" : \"can't delete environment in current status\"}"), err
 	}
 
 	err = model.AdaptCodeBildJobForDelete(event)
@@ -35,7 +35,7 @@ func DeleteController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }
 
 // DeleteCloudWatchEventController is the controller function for the DELETE_SCHEDULE action.
@@ -47,7 +47,7 @@ func DeleteCloudWatchEventController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }
 
 // DeleteResultController is the controller function for the RESULT_DESTROY action.
@@ -70,5 +70,5 @@ func DeleteResultController(event types.Event) (string, error) {
 		}
 	}
 
-	return fmt.Sprintf(fmt.Sprint("{\"message\" : \"success\"}")), err
+	return fmt.Sprint("{\"message\" : \"success\"}"), err
 }
