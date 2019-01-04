@@ -106,7 +106,10 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	})
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "codebuild/batchGetProjects"}, 0)
-		setStatusForEnvironment(event, "updating failed")
+		errStatus := setStatusForEnvironment(event, "updating failed")
+		if errStatus != nil {
+			return errStatus
+		}
 		return err
 	}
 	oldProject := oldProjects.Projects[0]
@@ -128,7 +131,10 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	marshaledBuildspec, err := yaml.Marshal(buildspec)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "yaml/marshal"}, 0)
-		setStatusForEnvironment(event, "updating failed")
+		errStatus := setStatusForEnvironment(event, "updating failed")
+		if errStatus != nil {
+			return errStatus
+		}
 		return err
 	}
 	helper.Logger.Log(errors.New(fmt.Sprint(string(marshaledBuildspec))), map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "buildspec"}, 4)
@@ -154,7 +160,10 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	})
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "codebuild/update"}, 0)
-		setStatusForEnvironment(event, "updating failed")
+		errStatus := setStatusForEnvironment(event, "updating failed")
+		if errStatus != nil {
+			return errStatus
+		}
 		return err
 	}
 

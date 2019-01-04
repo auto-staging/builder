@@ -25,7 +25,10 @@ func CreateCodeBuildJob(event types.Event) error {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "regex/compile"}, 0)
-		setStatusForEnvironment(event, "initiating failed")
+		errStatus := setStatusForEnvironment(event, "initiating failed")
+		if errStatus != nil {
+			return errStatus
+		}
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
@@ -74,7 +77,10 @@ func CreateCodeBuildJob(event types.Event) error {
 	res, err := yaml.Marshal(buildspec)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "yaml/marshal"}, 0)
-		setStatusForEnvironment(event, "initiating failed")
+		errStatus := setStatusForEnvironment(event, "initiating failed")
+		if errStatus != nil {
+			return errStatus
+		}
 		return err
 	}
 
@@ -104,7 +110,10 @@ func CreateCodeBuildJob(event types.Event) error {
 	_, err = client.CreateProject(&createInput)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "codebuild/create"}, 0)
-		setStatusForEnvironment(event, "initiating failed")
+		errStatus := setStatusForEnvironment(event, "initiating failed")
+		if errStatus != nil {
+			return errStatus
+		}
 		return err
 	}
 
