@@ -1,5 +1,7 @@
 # Auto-Staging-Builder
 
+> Builder creates the CodeBuild Jobs and the CloudWatchEvents rules for the Environments, it also starts the CodeBuild Job.
+
 ## Request Bodys CodeBuild
 
 ### Create | Tower -> Builder
@@ -83,7 +85,7 @@
 }
 ```
 
-## Request Bodys CloudWatch Events
+## Request Bodys CloudWatchEvents
 
 ### Create / Update Schedule Event | Tower -> Builder
 
