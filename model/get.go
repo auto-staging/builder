@@ -1,11 +1,11 @@
 package model
 
 import (
+	"github.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"gitlab.com/auto-staging/builder/helper"
-	"gitlab.com/auto-staging/builder/types"
 )
 
 // GetStatusForEnvironment gets the status for an Environment specified in the Event struct from DynamoDB.

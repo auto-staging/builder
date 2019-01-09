@@ -3,10 +3,10 @@ package model
 import (
 	"regexp"
 
+	"github.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
-	"gitlab.com/auto-staging/builder/helper"
-	"gitlab.com/auto-staging/builder/types"
 )
 
 // TriggerCodeBuild starts the CodeBuild Job for the Environment specified in Event struct.

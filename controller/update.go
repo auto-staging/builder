@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"gitlab.com/auto-staging/builder/helper"
-	"gitlab.com/auto-staging/builder/model"
-	"gitlab.com/auto-staging/builder/types"
+	"github.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/model"
+	"github.com/auto-staging/builder/types"
 )
 
 // UpdateController is the controller for the UPDATE action.

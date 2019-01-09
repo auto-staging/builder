@@ -3,8 +3,8 @@ package model
 import (
 	"regexp"
 
-	"gitlab.com/auto-staging/builder/helper"
-	"gitlab.com/auto-staging/builder/types"
+	"github.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/types"
 )
 
 // DeleteCloudWatchEvents removes the CloudWatchEvents rules (startup and shutdown schedules) for the Environment defined in event.

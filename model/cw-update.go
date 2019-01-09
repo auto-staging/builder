@@ -13,8 +13,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/cloudwatchevents"
 
-	"gitlab.com/auto-staging/builder/helper"
-	"gitlab.com/auto-staging/builder/types"
+	"github.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/types"
 )
 
 // UpdateCloudWatchEvents removes all existing CloudWatchEvents rules for the Environment and creates new shutdown and startup schedules according

@@ -1,10 +1,10 @@
 package model
 
 import (
+	"github.com/auto-staging/builder/helper"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/codebuild"
-	"gitlab.com/auto-staging/builder/helper"
 )
 
 func getCodeBuildClient() *codebuild.CodeBuild {

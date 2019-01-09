@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/auto-staging/builder/controller"
+	"github.com/auto-staging/builder/helper"
 	"github.com/aws/aws-lambda-go/lambda"
-	"gitlab.com/auto-staging/builder/controller"
-	"gitlab.com/auto-staging/builder/helper"
 
-	"gitlab.com/auto-staging/builder/types"
+	"github.com/auto-staging/builder/types"
 )
 
 // HandleRequest redirects the request to the matching controller based on the operation in the event.

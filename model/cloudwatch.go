@@ -1,9 +1,9 @@
 package model
 
 import (
+	"github.com/auto-staging/builder/helper"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"gitlab.com/auto-staging/builder/helper"
 
 	"github.com/aws/aws-sdk-go/service/cloudwatchevents"
 )

@@ -1,5 +1,7 @@
 # Auto-Staging-Builder
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/b7d5203ef3e07f1538a9/maintainability)](https://codeclimate.com/github/auto-staging/builder/maintainability)
+
 > Builder creates the CodeBuild Jobs and the CloudWatchEvents rules for the Environments, it also starts the CodeBuild Job.
 
 ## Request Bodys CodeBuild

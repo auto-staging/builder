@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/pkg/errors"
-	"gitlab.com/auto-staging/builder/helper"
-	"gitlab.com/auto-staging/builder/types"
 	yaml "gopkg.in/yaml.v2"
 )
 

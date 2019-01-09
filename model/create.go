@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"regexp"
 
-	"gitlab.com/auto-staging/builder/helper"
+	"github.com/auto-staging/builder/helper"
 
+	"github.com/auto-staging/builder/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/codebuild"
-	"gitlab.com/auto-staging/builder/types"
 	yaml "gopkg.in/yaml.v2"
 )
 
