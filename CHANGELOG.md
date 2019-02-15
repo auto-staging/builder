@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/auto-staging/builder/compare/1.0.0...1.0.1) (2019-02-15)
+
+
+### Bug Fixes
+
+* replaced fmt log outputs with lightning log ([9db8256](https://github.com/auto-staging/builder/commit/9db8256))
+* replaced go log with lightning log ([b7635b3](https://github.com/auto-staging/builder/commit/b7635b3))
+
 # 1.0.0 (2019-01-26)
 
 
