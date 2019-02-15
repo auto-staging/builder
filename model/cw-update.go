@@ -140,7 +140,7 @@ func createRulesWithTarget(repository, branch, branchRaw, action string, schedul
 		target, err := client.PutTargets(&cloudwatchevents.PutTargetsInput{
 			Targets: []*cloudwatchevents.Target{
 				{
-					Arn:   aws.String("arn:aws:lambda:eu-central-1:171842373341:function:auto-staging-scheduler"),
+					Arn:   aws.String(os.Getenv("SCHEDULER_LAMBDA_ARN")),
 					Id:    aws.String("scheduler" + fmt.Sprint(rand.Intn(9999))),
 					Input: aws.String("{ \"repository\": \"" + repository + "\", \"branch\": \"" + branchRaw + "\", \"action\": \"" + action + "\" }"),
 				},
