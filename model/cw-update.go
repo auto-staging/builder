@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"regexp"
@@ -127,7 +126,7 @@ func createRulesWithTarget(repository, branch, branchRaw, action string, schedul
 	for i := range schedule {
 		ruleName := "as-" + action + "-" + repository + "-" + branch + "-" + fmt.Sprint(rand.Intn(9999))
 
-		log.Println("PUT RULE")
+		helper.Logger.Log(errors.New("Adding rule with name: "+ruleName), map[string]string{"module": "model/createRulesWithTarget", "operation": "putRule"}, 4)
 		output, err := client.PutRule(&cloudwatchevents.PutRuleInput{
 			Description:        aws.String("Managed by auto-staging - cron" + schedule[i].Cron),
 			Name:               aws.String(ruleName),
@@ -140,7 +139,7 @@ func createRulesWithTarget(repository, branch, branchRaw, action string, schedul
 		}
 		helper.Logger.Log(errors.New(fmt.Sprint(output)), map[string]string{"module": "model/createRulesWithTarget", "operation": "aws/putRuleOutput"}, 4)
 
-		log.Println("PUT TARGET")
+		helper.Logger.Log(errors.New("Adding target to rule with name: "+ruleName), map[string]string{"module": "model/createRulesWithTarget", "operation": "putTarget"}, 4)
 		target, err := client.PutTargets(&cloudwatchevents.PutTargetsInput{
 			Targets: []*cloudwatchevents.Target{
 				{
