@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 
 	"github.com/auto-staging/builder/helper"
@@ -84,7 +83,7 @@ func CreateCodeBuildJob(event types.Event) error {
 		return err
 	}
 
-	helper.Logger.Log(errors.New(fmt.Sprint(string(res))), map[string]string{"module": "model/CreateCodeBuildJob", "operation": "buildspec"}, 4)
+	helper.Logger.Log(errors.New(string(res)), map[string]string{"module": "model/CreateCodeBuildJob", "operation": "buildspec"}, 4)
 
 	createInput := codebuild.CreateProjectInput{
 		Name:        aws.String("auto-staging-" + event.Repository + "-" + branchName),

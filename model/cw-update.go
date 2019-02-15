@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"regexp"
@@ -31,8 +30,7 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
 	// Startup schedules
-	fmt.Println("Startup schedules - Target")
-	fmt.Println(event.StartupSchedules)
+	helper.Logger.Log(errors.New("Startup schedules: "+fmt.Sprint(event.StartupSchedules)), map[string]string{"module": "model/UpdateCloudWatchEvents", "operation": "startupSchedules"}, 4)
 
 	err = removeRulesWithTarget(event.Repository, branchName, "start")
 	if err != nil {
@@ -45,8 +43,7 @@ func UpdateCloudWatchEvents(event types.Event) error {
 	}
 
 	// Shutdown schedules
-	fmt.Println("Shutdown schedules - Target")
-	fmt.Println(event.ShutdownSchedules)
+	helper.Logger.Log(errors.New("Shutdown schedules: "+fmt.Sprint(event.ShutdownSchedules)), map[string]string{"module": "model/UpdateCloudWatchEvents", "operation": "shutdownSchedules"}, 4)
 
 	err = removeRulesWithTarget(event.Repository, branchName, "stop")
 	if err != nil {
@@ -59,7 +56,7 @@ func UpdateCloudWatchEvents(event types.Event) error {
 }
 
 func removeRulesWithTarget(repository, branch, action string) error {
-	fmt.Println("REMOVE SCHEDULES for " + action)
+	helper.Logger.Log(errors.New("Removing "+action+" schedules for repo = "+repository+" and branch = "+branch), map[string]string{"module": "model/removeRuleWithTarget", "operation": "info/removeRules"}, 3)
 
 	client := getCloudWatchEventsClient()
 
@@ -71,7 +68,6 @@ func removeRulesWithTarget(repository, branch, action string) error {
 
 	for i := range result.Rules {
 		if strings.Contains(*result.Rules[i].Name, "as-"+action+"-"+repository+"-"+branch) {
-			fmt.Println("List targets for " + action + " rules ")
 			targetResult, err := client.ListTargetsByRule(&cloudwatchevents.ListTargetsByRuleInput{
 				Rule: result.Rules[i].Name,
 			})
@@ -82,7 +78,7 @@ func removeRulesWithTarget(repository, branch, action string) error {
 			helper.Logger.Log(errors.New(fmt.Sprint(targetResult)), map[string]string{"module": "model/removeRulesWithTarget", "operation": "aws/listTargetsResult"}, 4)
 
 			if len(targetResult.Targets) != 0 {
-				fmt.Println("Deleting targets")
+				helper.Logger.Log(errors.New("Deleting targets"), map[string]string{"module": "model/removeRulesWithTarget", "operation": "debug/deleteInfo"}, 4)
 				var targetIds []*string
 
 				for a := range targetResult.Targets {
@@ -99,10 +95,10 @@ func removeRulesWithTarget(repository, branch, action string) error {
 				helper.Logger.Log(errors.New(fmt.Sprint(deleteResult)), map[string]string{"module": "model/removeRulesWithTarget", "operation": "aws/removeTargetResult"}, 4)
 
 			} else {
-				fmt.Println("Skipping target delete, since there are no targets attached")
+				helper.Logger.Log(errors.New("Skipping target delete, since there are no targets attached"), map[string]string{"module": "model/removeRulesWithTarget", "operation": "debug/targetDeleteInfo"}, 4)
 			}
 
-			fmt.Println("Deleting rule: " + *result.Rules[i].Name)
+			helper.Logger.Log(errors.New("Deleting rule: "+*result.Rules[i].Name), map[string]string{"module": "model/removeRulesWithTarget", "operation": "info/deleteRule"}, 3)
 			result, err := client.DeleteRule(&cloudwatchevents.DeleteRuleInput{
 				Name: result.Rules[i].Name,
 			})
@@ -120,14 +116,14 @@ func removeRulesWithTarget(repository, branch, action string) error {
 // createRulesWithTarget creates a new CloudWatcheEvents rule with the Scheduler Lambda Funktion as target.
 // If an error occurs the error gets logged and the returned.
 func createRulesWithTarget(repository, branch, branchRaw, action string, schedule []types.TimeSchedule) error {
-	fmt.Println("CREATE NEW SCHEDULES for " + action)
+	helper.Logger.Log(errors.New("Creating "+action+" schedules for repo = "+repository+" and branch = "+branchRaw), map[string]string{"module": "model/createRulesWithTarget", "operation": "info/createRules"}, 3)
 
 	client := getCloudWatchEventsClient()
 
 	for i := range schedule {
 		ruleName := "as-" + action + "-" + repository + "-" + branch + "-" + fmt.Sprint(rand.Intn(9999))
 
-		log.Println("PUT RULE")
+		helper.Logger.Log(errors.New("Adding rule with name: "+ruleName), map[string]string{"module": "model/createRulesWithTarget", "operation": "putRule"}, 4)
 		output, err := client.PutRule(&cloudwatchevents.PutRuleInput{
 			Description:        aws.String("Managed by auto-staging - cron" + schedule[i].Cron),
 			Name:               aws.String(ruleName),
@@ -140,7 +136,7 @@ func createRulesWithTarget(repository, branch, branchRaw, action string, schedul
 		}
 		helper.Logger.Log(errors.New(fmt.Sprint(output)), map[string]string{"module": "model/createRulesWithTarget", "operation": "aws/putRuleOutput"}, 4)
 
-		log.Println("PUT TARGET")
+		helper.Logger.Log(errors.New("Adding target to rule with name: "+ruleName), map[string]string{"module": "model/createRulesWithTarget", "operation": "putTarget"}, 4)
 		target, err := client.PutTargets(&cloudwatchevents.PutTargetsInput{
 			Targets: []*cloudwatchevents.Target{
 				{
