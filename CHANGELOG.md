@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/auto-staging/builder/compare/1.0.2...1.1.0) (2019-02-22)
+
+
+### Features
+
+* made region dynamic based on lambda region from env var ([52903ed](https://github.com/auto-staging/builder/commit/52903ed))
+
 ## [1.0.2](https://github.com/auto-staging/builder/compare/1.0.1...1.0.2) (2019-02-15)
 
 
