@@ -7,7 +7,7 @@
 
 > Builder creates the CodeBuild Jobs and the CloudWatchEvents rules for the Environments, it also starts the CodeBuild Job.
 
-## Request Bodys CodeBuild
+## Request Bodys for CodeBuild
 
 ### Create | Tower -> Builder
 
@@ -90,7 +90,7 @@
 }
 ```
 
-## Request Bodys CloudWatchEvents
+## Request Bodys for CloudWatchEvents
 
 ### Create / Update Schedule Event | Tower -> Builder
 
@@ -124,25 +124,27 @@
 
 ## Usage
 
-#### Install dependencies
+### Install dependencies
+
+Go dep must be installed
 
 ```bash
 make prepare
 ```
 
-#### Run application
+### Run application
 
 ```bash
 make run
 ```
 
-#### Build binary
+### Build binary
 
 ```bash
 make build
 ```
 
-compiles to bin folder
+compiles to bin/auto-staging-builder
 
 ## License and Author
 
