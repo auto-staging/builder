@@ -91,7 +91,7 @@ func CreateCodeBuildJob(event types.Event) error {
 		ServiceRole: aws.String(event.CodeBuildRoleARN),
 		Environment: &codebuild.ProjectEnvironment{
 			ComputeType:          aws.String("BUILD_GENERAL1_SMALL"),
-			Image:                aws.String("janrtr/auto-staging-build"),
+			Image:                aws.String("autostaging/auto-staging-codebuild"),
 			Type:                 aws.String("LINUX_CONTAINER"),
 			EnvironmentVariables: envVars,
 		},
