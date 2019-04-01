@@ -12,9 +12,10 @@ import (
 // CreateController is the controller for the CREATE action.
 // First the status of the Environment gets checked, if the status is "pending" the CodBuild Job gets created and then triggered.
 func CreateController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
 
 	status := types.Status{}
-	err := model.GetStatusForEnvironment(event, &status)
+	err := databaseModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

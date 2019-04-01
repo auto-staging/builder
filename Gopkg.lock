@@ -14,7 +14,7 @@
   version = "v1.8.2"
 
 [[projects]]
-  digest = "1:97efafc69db163a3c6065cd6e72e1d41451d2aae3ff4703d216c32e7bf0b6897"
+  digest = "1:1635228a2722434c4366a6c8cda5e67a8bcf3f1467fcb611907e4c99d97b6409"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -52,6 +52,7 @@
     "service/codebuild",
     "service/dynamodb",
     "service/dynamodb/dynamodbattribute",
+    "service/dynamodb/dynamodbiface",
     "service/sts",
   ]
   pruneopts = "UT"
@@ -100,6 +101,7 @@
     "github.com/aws/aws-sdk-go/service/codebuild",
     "github.com/aws/aws-sdk-go/service/dynamodb",
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",
+    "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface",
     "github.com/janritter/go-lightning-log",
     "github.com/pkg/errors",
     "gopkg.in/yaml.v2",

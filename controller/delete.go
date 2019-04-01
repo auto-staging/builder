@@ -13,9 +13,10 @@ import (
 // First the status of the Environment gets checked, if the status is "running", "stopped", "initiating failed", "destroyed failed"
 // the CodBuild Job gets adapted to delete the Environment and then triggered.
 func DeleteController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
 
 	status := types.Status{}
-	err := model.GetStatusForEnvironment(event, &status)
+	err := databaseModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

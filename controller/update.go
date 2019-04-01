@@ -13,8 +13,10 @@ import (
 // First the status of the Environment gets checked, if the status is "running" or "updating failed" the CodBuild Job gets adapted with the updated
 // configuration and then triggered.
 func UpdateController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
+
 	status := types.Status{}
-	err := model.GetStatusForEnvironment(event, &status)
+	err := databaseModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
