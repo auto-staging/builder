@@ -26,6 +26,15 @@ func DeleteController(event types.Event) (string, error) {
 		return fmt.Sprint("{\"message\" : \"can't delete environment in current status\"}"), err
 	}
 
+	err = databaseModel.SetStatusForEnvironment(event, "destroying")
+	if err != nil {
+		errStatus := databaseModel.SetStatusForEnvironment(event, "destroying failed")
+		if errStatus != nil {
+			return "", errStatus
+		}
+		return "", err
+	}
+
 	err = model.AdaptCodeBildJobForDelete(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
@@ -54,8 +63,9 @@ func DeleteCloudWatchEventController(event types.Event) (string, error) {
 // DeleteResultController is the controller function for the RESULT_DESTROY action.
 // The status of the Environment gets set according to the result of the CodeBuild Job and the CodeBuild Job and Environment get removed.
 func DeleteResultController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
 
-	err := model.SetStatusAfterDeletion(event)
+	err := databaseModel.SetStatusAfterDeletion(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

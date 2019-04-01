@@ -26,14 +26,22 @@ func UpdateController(event types.Event) (string, error) {
 		return fmt.Sprint("{\"message\" : \"can't update environment in current status\"}"), err
 	}
 
+	err = databaseModel.SetStatusForEnvironment(event, "updating")
+	if err != nil {
+		return "", err
+	}
 	err = model.AdaptCodeBildJobForUpdate(event)
 	if err != nil {
-		return fmt.Sprintf(""), err
+		errStatus := databaseModel.SetStatusForEnvironment(event, "updating failed")
+		if errStatus != nil {
+			return "", errStatus
+		}
+		return "", err
 	}
 
 	err = model.TriggerCodeBuild(event)
 	if err != nil {
-		return fmt.Sprintf(""), err
+		return "", err
 	}
 
 	return fmt.Sprint("{\"message\" : \"success\"}"), err
@@ -42,8 +50,9 @@ func UpdateController(event types.Event) (string, error) {
 // UpdateResultController is the controller for the RESULT_UPDATE action.
 // The status of the Environment gets set according to the result of the CodeBuild Job.
 func UpdateResultController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
 
-	err := model.SetStatusAfterUpdate(event)
+	err := databaseModel.SetStatusAfterUpdate(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

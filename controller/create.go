@@ -25,10 +25,19 @@ func CreateController(event types.Event) (string, error) {
 		return fmt.Sprint("{\"message\" : \"can't create environment in current status\"}"), err
 	}
 
+	err = databaseModel.SetStatusForEnvironment(event, "initiating")
+	if err != nil {
+		return "", err
+	}
+
 	err = model.CreateCodeBuildJob(event)
 	if err != nil {
-		return fmt.Sprintf(""), err
+		errStatus := databaseModel.SetStatusForEnvironment(event, "initiating failed")
+		if errStatus != nil {
+			return "", errStatus
+		}
 	}
+	return fmt.Sprintf(""), err
 
 	err = model.TriggerCodeBuild(event)
 	if err != nil {
@@ -41,8 +50,9 @@ func CreateController(event types.Event) (string, error) {
 // CreateResultController is the controller for the RESULT_CREATE action.
 // The status of the Environment gets set according to the result of the CodeBuild Job.
 func CreateResultController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
 
-	err := model.SetStatusAfterCreation(event)
+	err := databaseModel.SetStatusAfterCreation(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
