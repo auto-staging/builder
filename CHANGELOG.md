@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/auto-staging/builder/compare/1.1.1...1.1.2) (2019-04-01)
+
+
+### Bug Fixes
+
+* replaced test docker image with official auto staging image ([72a3c69](https://github.com/auto-staging/builder/commit/72a3c69))
+
 ## [1.1.1](https://github.com/auto-staging/builder/compare/1.1.0...1.1.1) (2019-03-28)
 
 
