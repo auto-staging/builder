@@ -36,8 +36,8 @@ func CreateController(event types.Event) (string, error) {
 		if errStatus != nil {
 			return "", errStatus
 		}
+		return fmt.Sprintf(""), err
 	}
-	return fmt.Sprintf(""), err
 
 	err = model.TriggerCodeBuild(event)
 	if err != nil {
