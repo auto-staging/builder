@@ -125,8 +125,8 @@ func (DatabaseModel *DatabaseModel) SetStatusAfterDeletion(event types.Event) er
 
 // DeleteEnvironment removes an Environment specified in the Event struct from DynamoDB.
 // If an error occurs the error gets logged and the returned.
-func DeleteEnvironment(event types.Event) error {
-	svc := getDynamoDbClient()
+func (DatabaseModel *DatabaseModel) DeleteEnvironment(event types.Event) error {
+	svc := DatabaseModel.DynamoDBAPI
 
 	_, err := svc.DeleteItem(&dynamodb.DeleteItemInput{
 		TableName: aws.String("auto-staging-environments"),
