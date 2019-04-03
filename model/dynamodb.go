@@ -15,10 +15,12 @@ type DynamoDBModelAPI interface {
 	SetStatusAfterUpdate(event types.Event) error
 }
 
+// DynamoDBModel is a struct including the AWS SDK DynamoDB interface, all DynamoDB model functions are called on this struct and the included AWS SDK DynamoDB service
 type DynamoDBModel struct {
 	dynamodbiface.DynamoDBAPI
 }
 
+// NewDynamoDBModel takes the AWS SDK DynamoDB interface as parameter and returns the pointer to an DynamoDBModel struct, on which all DynamoDB model functions can be called
 func NewDynamoDBModel(svc dynamodbiface.DynamoDBAPI) *DynamoDBModel {
 	return &DynamoDBModel{
 		DynamoDBAPI: svc,
