@@ -7,8 +7,6 @@ import (
 
 type CloudWatchEventsModelAPI interface {
 	UpdateCloudWatchEvents(event types.Event) error
-	removeRulesWithTarget(repository, branch, action string) error
-	createRulesWithTarget(repository, branch, branchRaw, action string, schedule []types.TimeSchedule) error
 	DeleteCloudWatchEvents(event types.Event) error
 }
 

@@ -38,31 +38,3 @@ func (_m *CloudWatchEventsModelAPI) UpdateCloudWatchEvents(event types.Event) er
 
 	return r0
 }
-
-// createRulesWithTarget provides a mock function with given fields: repository, branch, branchRaw, action, schedule
-func (_m *CloudWatchEventsModelAPI) createRulesWithTarget(repository string, branch string, branchRaw string, action string, schedule []types.TimeSchedule) error {
-	ret := _m.Called(repository, branch, branchRaw, action, schedule)
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(string, string, string, string, []types.TimeSchedule) error); ok {
-		r0 = rf(repository, branch, branchRaw, action, schedule)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
-// removeRulesWithTarget provides a mock function with given fields: repository, branch, action
-func (_m *CloudWatchEventsModelAPI) removeRulesWithTarget(repository string, branch string, action string) error {
-	ret := _m.Called(repository, branch, action)
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(string, string, string) error); ok {
-		r0 = rf(repository, branch, action)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
