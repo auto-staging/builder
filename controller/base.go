@@ -1,10 +1,8 @@
 package controller
 
 import (
+	"github.com/auto-staging/builder/model"
 	"github.com/auto-staging/builder/types"
-	"github.com/aws/aws-sdk-go/service/cloudwatchevents/cloudwatcheventsiface"
-	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
 type ServiceBaseControllerAPI interface {
@@ -19,15 +17,15 @@ type ServiceBaseControllerAPI interface {
 }
 
 type ServiceBaseController struct {
-	cloudwatcheventsiface.CloudWatchEventsAPI
-	codebuildiface.CodeBuildAPI
-	dynamodbiface.DynamoDBAPI
+	model.CloudWatchEventsModelAPI
+	model.CodeBuildModelAPI
+	model.DynamoDBModelAPI
 }
 
-func NewServiceBaseController(svcCloudWatchEvents cloudwatcheventsiface.CloudWatchEventsAPI, svcCodeBuild codebuildiface.CodeBuildAPI, svcDynamoDB dynamodbiface.DynamoDBAPI) *ServiceBaseController {
+func NewServiceBaseController(modelCloudWatchEvents model.CloudWatchEventsModelAPI, modelCodeBuild model.CodeBuildModelAPI, modelDynamoDB model.DynamoDBModelAPI) *ServiceBaseController {
 	return &ServiceBaseController{
-		CloudWatchEventsAPI: svcCloudWatchEvents,
-		CodeBuildAPI:        svcCodeBuild,
-		DynamoDBAPI:         svcDynamoDB,
+		CloudWatchEventsModelAPI: modelCloudWatchEvents,
+		CodeBuildModelAPI:        modelCodeBuild,
+		DynamoDBModelAPI:         modelDynamoDB,
 	}
 }

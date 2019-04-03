@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/auto-staging/builder/model"
+
 	"github.com/auto-staging/builder/controller"
 	"github.com/auto-staging/builder/helper"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -21,9 +23,9 @@ import (
 func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 
 	serviceBaseController := controller.NewServiceBaseController(
-		getCloudWatchEventsClient(),
-		getCodeBuildClient(),
-		getDynamoDbClient(),
+		model.NewCloudWatchEventsModel(getCloudWatchEventsClient()),
+		model.NewCodeBuildModel(getCodeBuildClient()),
+		model.NewDynamoDBModel(getDynamoDbClient()),
 	)
 
 	switch event.Operation {

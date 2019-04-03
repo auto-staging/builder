@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/auto-staging/builder/helper"
-	"github.com/auto-staging/builder/model"
 	"github.com/auto-staging/builder/types"
 )
 
@@ -13,11 +12,11 @@ import (
 // First the status of the Environment gets checked, if the status is "running", "stopped", "initiating failed", "destroyed failed"
 // the CodBuild Job gets adapted to delete the Environment and then triggered.
 func (ServiceBaseController *ServiceBaseController) DeleteController(event types.Event) (string, error) {
-	DynamoDBModel := model.NewDynamoDBModel(ServiceBaseController.DynamoDBAPI)
-	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
+	dynamoDBModel := ServiceBaseController.DynamoDBModelAPI
+	codeBuildModel := ServiceBaseController.CodeBuildModelAPI
 
 	status := types.Status{}
-	err := DynamoDBModel.GetStatusForEnvironment(event, &status)
+	err := dynamoDBModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -27,9 +26,9 @@ func (ServiceBaseController *ServiceBaseController) DeleteController(event types
 		return fmt.Sprint("{\"message\" : \"can't delete environment in current status\"}"), err
 	}
 
-	err = DynamoDBModel.SetStatusForEnvironment(event, "destroying")
+	err = dynamoDBModel.SetStatusForEnvironment(event, "destroying")
 	if err != nil {
-		errStatus := DynamoDBModel.SetStatusForEnvironment(event, "destroying failed")
+		errStatus := dynamoDBModel.SetStatusForEnvironment(event, "destroying failed")
 		if errStatus != nil {
 			return "", errStatus
 		}
@@ -52,7 +51,7 @@ func (ServiceBaseController *ServiceBaseController) DeleteController(event types
 // DeleteCloudWatchEventController is the controller function for the DELETE_SCHEDULE action.
 // It calls the function to delete all CloudWatchEvents rules for the Environment.
 func (ServiceBaseController *ServiceBaseController) DeleteCloudWatchEventController(event types.Event) (string, error) {
-	cloudWatchEventsModel := model.NewCloudWatchEventsModel(ServiceBaseController.CloudWatchEventsAPI)
+	cloudWatchEventsModel := ServiceBaseController.CloudWatchEventsModelAPI
 
 	err := cloudWatchEventsModel.DeleteCloudWatchEvents(event)
 	if err != nil {
@@ -65,10 +64,10 @@ func (ServiceBaseController *ServiceBaseController) DeleteCloudWatchEventControl
 // DeleteResultController is the controller function for the RESULT_DESTROY action.
 // The status of the Environment gets set according to the result of the CodeBuild Job and the CodeBuild Job and Environment get removed.
 func (ServiceBaseController *ServiceBaseController) DeleteResultController(event types.Event) (string, error) {
-	DynamoDBModel := model.NewDynamoDBModel(ServiceBaseController.DynamoDBAPI)
-	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
+	dynamoDBModel := ServiceBaseController.DynamoDBModelAPI
+	codeBuildModel := ServiceBaseController.CodeBuildModelAPI
 
-	err := DynamoDBModel.SetStatusAfterDeletion(event)
+	err := dynamoDBModel.SetStatusAfterDeletion(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -78,7 +77,7 @@ func (ServiceBaseController *ServiceBaseController) DeleteResultController(event
 		if err != nil {
 			return fmt.Sprintf(""), err
 		}
-		err = DynamoDBModel.DeleteEnvironment(event)
+		err = dynamoDBModel.DeleteEnvironment(event)
 		if err != nil {
 			return fmt.Sprintf(""), err
 		}
