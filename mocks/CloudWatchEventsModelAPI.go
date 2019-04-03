@@ -11,6 +11,20 @@ type CloudWatchEventsModelAPI struct {
 	mock.Mock
 }
 
+// DeleteCloudWatchEvents provides a mock function with given fields: event
+func (_m *CloudWatchEventsModelAPI) DeleteCloudWatchEvents(event types.Event) error {
+	ret := _m.Called(event)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(types.Event) error); ok {
+		r0 = rf(event)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // UpdateCloudWatchEvents provides a mock function with given fields: event
 func (_m *CloudWatchEventsModelAPI) UpdateCloudWatchEvents(event types.Event) error {
 	ret := _m.Called(event)
