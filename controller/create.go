@@ -13,6 +13,7 @@ import (
 // First the status of the Environment gets checked, if the status is "pending" the CodBuild Job gets created and then triggered.
 func CreateController(event types.Event) (string, error) {
 	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
+	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
 
 	status := types.Status{}
 	err := databaseModel.GetStatusForEnvironment(event, &status)
@@ -30,7 +31,7 @@ func CreateController(event types.Event) (string, error) {
 		return "", err
 	}
 
-	err = model.CreateCodeBuildJob(event)
+	err = codeBuildModel.CreateCodeBuildJob(event)
 	if err != nil {
 		errStatus := databaseModel.SetStatusForEnvironment(event, "initiating failed")
 		if errStatus != nil {
@@ -39,7 +40,7 @@ func CreateController(event types.Event) (string, error) {
 		return fmt.Sprintf(""), err
 	}
 
-	err = model.TriggerCodeBuild(event)
+	err = codeBuildModel.TriggerCodeBuild(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

@@ -57,7 +57,7 @@ func (DatabaseModel *DatabaseModel) SetStatusForEnvironment(event types.Event, s
 
 // AdaptCodeBildJobForUpdate adapts the CodeBuild Job and buildspec with the updated Environment configuration (EnvironmentVariables).
 // If an error occurs the error gets logged and the returned.
-func AdaptCodeBildJobForUpdate(event types.Event) error {
+func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForUpdate(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -92,7 +92,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		})
 	}
 
-	client := getCodeBuildClient()
+	client := CodeBuildModel.CodeBuildAPI
 	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
 		Names: []*string{
 			aws.String("auto-staging-" + event.Repository + "-" + branchName),

@@ -14,7 +14,7 @@
   version = "v1.8.2"
 
 [[projects]]
-  digest = "1:1011eb36b89499e15b684a8e9a3757ead4874ad8905fd49cbf6f857761e25633"
+  digest = "1:f9b93724673f1c39d4c14ec547383e5bd459b23ee6bcb7d10ad417d245377d4e"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -51,6 +51,7 @@
     "service/cloudwatchevents",
     "service/cloudwatchevents/cloudwatcheventsiface",
     "service/codebuild",
+    "service/codebuild/codebuildiface",
     "service/dynamodb",
     "service/dynamodb/dynamodbattribute",
     "service/dynamodb/dynamodbiface",
@@ -137,6 +138,7 @@
     "github.com/aws/aws-sdk-go/service/cloudwatchevents",
     "github.com/aws/aws-sdk-go/service/cloudwatchevents/cloudwatcheventsiface",
     "github.com/aws/aws-sdk-go/service/codebuild",
+    "github.com/aws/aws-sdk-go/service/codebuild/codebuildiface",
     "github.com/aws/aws-sdk-go/service/dynamodb",
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface",

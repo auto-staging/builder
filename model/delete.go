@@ -15,8 +15,8 @@ import (
 
 // DeleteCodeBuildJob removes the CodeBuild Job for the Environment specified in the Event struct.
 // If an error occurs the error gets logged and the returned.
-func DeleteCodeBuildJob(event types.Event) error {
-	client := getCodeBuildClient()
+func (CodeBuildModel *CodeBuildModel) DeleteCodeBuildJob(event types.Event) error {
+	client := CodeBuildModel.CodeBuildAPI
 
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -37,7 +37,7 @@ func DeleteCodeBuildJob(event types.Event) error {
 
 // AdaptCodeBildJobForDelete adapts the CodeBuild buildspec to delete an Environment infrastructure.
 // If an error occurs the error gets logged and the returned.
-func AdaptCodeBildJobForDelete(event types.Event) error {
+func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForDelete(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -46,7 +46,7 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
-	client := getCodeBuildClient()
+	client := CodeBuildModel.CodeBuildAPI
 
 	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
 		Names: []*string{

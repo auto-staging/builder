@@ -14,6 +14,7 @@ import (
 // configuration and then triggered.
 func UpdateController(event types.Event) (string, error) {
 	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
+	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
 
 	status := types.Status{}
 	err := databaseModel.GetStatusForEnvironment(event, &status)
@@ -30,7 +31,7 @@ func UpdateController(event types.Event) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	err = model.AdaptCodeBildJobForUpdate(event)
+	err = codeBuildModel.AdaptCodeBildJobForUpdate(event)
 	if err != nil {
 		errStatus := databaseModel.SetStatusForEnvironment(event, "updating failed")
 		if errStatus != nil {
@@ -39,7 +40,7 @@ func UpdateController(event types.Event) (string, error) {
 		return "", err
 	}
 
-	err = model.TriggerCodeBuild(event)
+	err = codeBuildModel.TriggerCodeBuild(event)
 	if err != nil {
 		return "", err
 	}

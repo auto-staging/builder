@@ -14,7 +14,7 @@ import (
 
 // CreateCodeBuildJob creates the CodebuildJob via AWS SDK with the configuration defined for the Environment.
 // If an error occurs the error gets logged and the returned.
-func CreateCodeBuildJob(event types.Event) error {
+func (CodeBuildModel *CodeBuildModel) CreateCodeBuildJob(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -92,7 +92,7 @@ func CreateCodeBuildJob(event types.Event) error {
 		},
 	}
 
-	client := getCodeBuildClient()
+	client := CodeBuildModel.CodeBuildAPI
 	_, err = client.CreateProject(&createInput)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "codebuild/create"}, 0)

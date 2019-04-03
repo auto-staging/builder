@@ -14,6 +14,7 @@ import (
 // the CodBuild Job gets adapted to delete the Environment and then triggered.
 func DeleteController(event types.Event) (string, error) {
 	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
+	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
 
 	status := types.Status{}
 	err := databaseModel.GetStatusForEnvironment(event, &status)
@@ -35,12 +36,12 @@ func DeleteController(event types.Event) (string, error) {
 		return "", err
 	}
 
-	err = model.AdaptCodeBildJobForDelete(event)
+	err = codeBuildModel.AdaptCodeBildJobForDelete(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
 
-	err = model.TriggerCodeBuild(event)
+	err = codeBuildModel.TriggerCodeBuild(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -65,6 +66,7 @@ func DeleteCloudWatchEventController(event types.Event) (string, error) {
 // The status of the Environment gets set according to the result of the CodeBuild Job and the CodeBuild Job and Environment get removed.
 func DeleteResultController(event types.Event) (string, error) {
 	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
+	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
 
 	err := databaseModel.SetStatusAfterDeletion(event)
 	if err != nil {
@@ -72,7 +74,7 @@ func DeleteResultController(event types.Event) (string, error) {
 	}
 
 	if event.Success == 1 {
-		err = model.DeleteCodeBuildJob(event)
+		err = codeBuildModel.DeleteCodeBuildJob(event)
 		if err != nil {
 			return fmt.Sprintf(""), err
 		}
