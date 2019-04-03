@@ -64,36 +64,25 @@ func main() {
 	lambda.Start(HandleRequest)
 }
 
-func getCloudWatchEventsClient() *cloudwatchevents.CloudWatchEvents {
+func getAWSSDKSession() *session.Session {
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String(os.Getenv("AWS_REGION"))},
 	)
 	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "main/getCloudWatchClient", "operation": "aws/session"}, 0)
+		helper.Logger.Log(err, map[string]string{"module": "main/getAWSSDKSession", "operation": "aws/session"}, 0)
+		os.Exit(1)
 	}
+	return sess
+}
 
-	return cloudwatchevents.New(sess)
+func getCloudWatchEventsClient() *cloudwatchevents.CloudWatchEvents {
+	return cloudwatchevents.New(getAWSSDKSession())
 }
 
 func getCodeBuildClient() *codebuild.CodeBuild {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(os.Getenv("AWS_REGION"))},
-	)
-	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "main/getCodeBuildClient", "operation": "aws/session"}, 0)
-	}
-
-	return codebuild.New(sess)
+	return codebuild.New(getAWSSDKSession())
 }
 
 func getDynamoDbClient() *dynamodb.DynamoDB {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(os.Getenv("AWS_REGION"))},
-	)
-
-	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "main/getDynamoDbClient", "operation": "aws/session"}, 0)
-	}
-
-	return dynamodb.New(sess)
+	return dynamodb.New(getAWSSDKSession())
 }
