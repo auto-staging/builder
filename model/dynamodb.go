@@ -7,11 +7,12 @@ import (
 
 // DatabaseModelAPI is an interface including all DynamoDB model functions
 type DatabaseModelAPI interface {
+	SetStatusAfterCreation(event types.Event) error
+	SetStatusAfterDeletion(event types.Event) error
+	DeleteEnvironment(event types.Event) error
 	GetStatusForEnvironment(event types.Event, status *types.Status) error
 	SetStatusForEnvironment(event types.Event, status string) error
 	SetStatusAfterUpdate(event types.Event) error
-	SetStatusAfterDeletion(event types.Event) error
-	DeleteEnvironment(event types.Event) error
 }
 
 type DatabaseModel struct {
