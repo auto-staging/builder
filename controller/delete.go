@@ -13,11 +13,11 @@ import (
 // First the status of the Environment gets checked, if the status is "running", "stopped", "initiating failed", "destroyed failed"
 // the CodBuild Job gets adapted to delete the Environment and then triggered.
 func (ServiceBaseController *ServiceBaseController) DeleteController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	DynamoDBModel := model.NewDynamoDBModel(ServiceBaseController.DynamoDBAPI)
 	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
 
 	status := types.Status{}
-	err := databaseModel.GetStatusForEnvironment(event, &status)
+	err := DynamoDBModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -27,9 +27,9 @@ func (ServiceBaseController *ServiceBaseController) DeleteController(event types
 		return fmt.Sprint("{\"message\" : \"can't delete environment in current status\"}"), err
 	}
 
-	err = databaseModel.SetStatusForEnvironment(event, "destroying")
+	err = DynamoDBModel.SetStatusForEnvironment(event, "destroying")
 	if err != nil {
-		errStatus := databaseModel.SetStatusForEnvironment(event, "destroying failed")
+		errStatus := DynamoDBModel.SetStatusForEnvironment(event, "destroying failed")
 		if errStatus != nil {
 			return "", errStatus
 		}
@@ -65,10 +65,10 @@ func (ServiceBaseController *ServiceBaseController) DeleteCloudWatchEventControl
 // DeleteResultController is the controller function for the RESULT_DESTROY action.
 // The status of the Environment gets set according to the result of the CodeBuild Job and the CodeBuild Job and Environment get removed.
 func (ServiceBaseController *ServiceBaseController) DeleteResultController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	DynamoDBModel := model.NewDynamoDBModel(ServiceBaseController.DynamoDBAPI)
 	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
 
-	err := databaseModel.SetStatusAfterDeletion(event)
+	err := DynamoDBModel.SetStatusAfterDeletion(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -78,7 +78,7 @@ func (ServiceBaseController *ServiceBaseController) DeleteResultController(event
 		if err != nil {
 			return fmt.Sprintf(""), err
 		}
-		err = databaseModel.DeleteEnvironment(event)
+		err = DynamoDBModel.DeleteEnvironment(event)
 		if err != nil {
 			return fmt.Sprintf(""), err
 		}

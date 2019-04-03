@@ -14,8 +14,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-func (DatabaseModel *DatabaseModel) SetStatusForEnvironment(event types.Event, status string) error {
-	svc := DatabaseModel.DynamoDBAPI
+func (DynamoDBModel *DynamoDBModel) SetStatusForEnvironment(event types.Event, status string) error {
+	svc := DynamoDBModel.DynamoDBAPI
 
 	updateStruct := types.StatusUpdate{
 		Status: status,
@@ -155,7 +155,7 @@ func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForUpdate(event types.Even
 // SetStatusAfterUpdate checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
 // gets set to "running" otherwise it gets set to "updating failed".
 // If an error occurs the error gets logged and the returned.
-func (DatabaseModel *DatabaseModel) SetStatusAfterUpdate(event types.Event) error {
+func (DynamoDBModel *DynamoDBModel) SetStatusAfterUpdate(event types.Event) error {
 
 	status := "updating failed"
 
@@ -163,5 +163,5 @@ func (DatabaseModel *DatabaseModel) SetStatusAfterUpdate(event types.Event) erro
 		status = "running"
 	}
 
-	return DatabaseModel.SetStatusForEnvironment(event, status)
+	return DynamoDBModel.SetStatusForEnvironment(event, status)
 }

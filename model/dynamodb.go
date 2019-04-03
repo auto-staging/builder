@@ -5,8 +5,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
-// DatabaseModelAPI is an interface including all DynamoDB model functions
-type DatabaseModelAPI interface {
+// DynamoDBModelAPI is an interface including all DynamoDB model functions
+type DynamoDBModelAPI interface {
 	SetStatusAfterCreation(event types.Event) error
 	SetStatusAfterDeletion(event types.Event) error
 	DeleteEnvironment(event types.Event) error
@@ -15,12 +15,12 @@ type DatabaseModelAPI interface {
 	SetStatusAfterUpdate(event types.Event) error
 }
 
-type DatabaseModel struct {
+type DynamoDBModel struct {
 	dynamodbiface.DynamoDBAPI
 }
 
-func NewDatabaseModel(svc dynamodbiface.DynamoDBAPI) *DatabaseModel {
-	return &DatabaseModel{
+func NewDynamoDBModel(svc dynamodbiface.DynamoDBAPI) *DynamoDBModel {
+	return &DynamoDBModel{
 		DynamoDBAPI: svc,
 	}
 }

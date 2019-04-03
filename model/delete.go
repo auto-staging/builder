@@ -112,7 +112,7 @@ func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForDelete(event types.Even
 // SetStatusAfterDeletion checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
 // gets set to "destroyed" otherwise it gets set to "destroying failed".
 // If an error occurs the error gets logged and the returned.
-func (DatabaseModel *DatabaseModel) SetStatusAfterDeletion(event types.Event) error {
+func (DynamoDBModel *DynamoDBModel) SetStatusAfterDeletion(event types.Event) error {
 
 	status := "destroying failed"
 
@@ -120,13 +120,13 @@ func (DatabaseModel *DatabaseModel) SetStatusAfterDeletion(event types.Event) er
 		status = "destroyed"
 	}
 
-	return DatabaseModel.SetStatusForEnvironment(event, status)
+	return DynamoDBModel.SetStatusForEnvironment(event, status)
 }
 
 // DeleteEnvironment removes an Environment specified in the Event struct from DynamoDB.
 // If an error occurs the error gets logged and the returned.
-func (DatabaseModel *DatabaseModel) DeleteEnvironment(event types.Event) error {
-	svc := DatabaseModel.DynamoDBAPI
+func (DynamoDBModel *DynamoDBModel) DeleteEnvironment(event types.Event) error {
+	svc := DynamoDBModel.DynamoDBAPI
 
 	_, err := svc.DeleteItem(&dynamodb.DeleteItemInput{
 		TableName: aws.String("auto-staging-environments"),

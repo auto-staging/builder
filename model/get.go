@@ -10,8 +10,8 @@ import (
 
 // GetStatusForEnvironment gets the status for an Environment specified in the Event struct from DynamoDB.
 // If an error occurs the error gets logged and the returned.
-func (DatabaseModel *DatabaseModel) GetStatusForEnvironment(event types.Event, status *types.Status) error {
-	svc := DatabaseModel.DynamoDBAPI
+func (DynamoDBModel *DynamoDBModel) GetStatusForEnvironment(event types.Event, status *types.Status) error {
+	svc := DynamoDBModel.DynamoDBAPI
 
 	result, err := svc.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String("auto-staging-environments"),

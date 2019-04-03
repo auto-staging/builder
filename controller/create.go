@@ -12,11 +12,11 @@ import (
 // CreateController is the controller for the CREATE action.
 // First the status of the Environment gets checked, if the status is "pending" the CodBuild Job gets created and then triggered.
 func (ServiceBaseController *ServiceBaseController) CreateController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	DynamoDBModel := model.NewDynamoDBModel(ServiceBaseController.DynamoDBAPI)
 	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
 
 	status := types.Status{}
-	err := databaseModel.GetStatusForEnvironment(event, &status)
+	err := DynamoDBModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -26,14 +26,14 @@ func (ServiceBaseController *ServiceBaseController) CreateController(event types
 		return fmt.Sprint("{\"message\" : \"can't create environment in current status\"}"), err
 	}
 
-	err = databaseModel.SetStatusForEnvironment(event, "initiating")
+	err = DynamoDBModel.SetStatusForEnvironment(event, "initiating")
 	if err != nil {
 		return "", err
 	}
 
 	err = codeBuildModel.CreateCodeBuildJob(event)
 	if err != nil {
-		errStatus := databaseModel.SetStatusForEnvironment(event, "initiating failed")
+		errStatus := DynamoDBModel.SetStatusForEnvironment(event, "initiating failed")
 		if errStatus != nil {
 			return "", errStatus
 		}
@@ -51,9 +51,9 @@ func (ServiceBaseController *ServiceBaseController) CreateController(event types
 // CreateResultController is the controller for the RESULT_CREATE action.
 // The status of the Environment gets set according to the result of the CodeBuild Job.
 func (ServiceBaseController *ServiceBaseController) CreateResultController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	DynamoDBModel := model.NewDynamoDBModel(ServiceBaseController.DynamoDBAPI)
 
-	err := databaseModel.SetStatusAfterCreation(event)
+	err := DynamoDBModel.SetStatusAfterCreation(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

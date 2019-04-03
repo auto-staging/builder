@@ -105,7 +105,7 @@ func (CodeBuildModel *CodeBuildModel) CreateCodeBuildJob(event types.Event) erro
 // SetStatusAfterCreation checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
 // gets set to "running" otherwise it gets set to "initating failed".
 // If an error occurs the error gets logged and the returned.
-func (DatabaseModel *DatabaseModel) SetStatusAfterCreation(event types.Event) error {
+func (DynamoDBModel *DynamoDBModel) SetStatusAfterCreation(event types.Event) error {
 
 	status := "initiating failed"
 
@@ -113,5 +113,5 @@ func (DatabaseModel *DatabaseModel) SetStatusAfterCreation(event types.Event) er
 		status = "running"
 	}
 
-	return DatabaseModel.SetStatusForEnvironment(event, status)
+	return DynamoDBModel.SetStatusForEnvironment(event, status)
 }
