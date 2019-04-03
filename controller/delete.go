@@ -52,7 +52,9 @@ func DeleteController(event types.Event) (string, error) {
 // It calls the function to delete all CloudWatchEvents rules for the Environment.
 func DeleteCloudWatchEventController(event types.Event) (string, error) {
 
-	err := model.DeleteCloudWatchEvents(event)
+	cloudWatchEventsModel := model.NewCloudWatchEventsModel(getCloudWatchEventsClient())
+
+	err := cloudWatchEventsModel.DeleteCloudWatchEvents(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

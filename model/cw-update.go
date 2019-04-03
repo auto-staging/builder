@@ -19,7 +19,7 @@ import (
 // UpdateCloudWatchEvents removes all existing CloudWatchEvents rules for the Environment and creates new shutdown and startup schedules according
 // to the Environment configuration. This function is called by the controller.
 // If an error occurs the error gets logged and the returned.
-func (CloudWatchModel *CloudWatchModel) UpdateCloudWatchEvents(event types.Event) error {
+func (CloudWatchEventsModel *CloudWatchEventsModel) UpdateCloudWatchEvents(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -32,12 +32,12 @@ func (CloudWatchModel *CloudWatchModel) UpdateCloudWatchEvents(event types.Event
 	// Startup schedules
 	helper.Logger.Log(errors.New("Startup schedules: "+fmt.Sprint(event.StartupSchedules)), map[string]string{"module": "model/UpdateCloudWatchEvents", "operation": "startupSchedules"}, 4)
 
-	err = removeRulesWithTarget(event.Repository, branchName, "start")
+	err = CloudWatchEventsModel.removeRulesWithTarget(event.Repository, branchName, "start")
 	if err != nil {
 		return err
 	}
 
-	err = createRulesWithTarget(event.Repository, branchName, event.Branch, "start", event.StartupSchedules)
+	err = CloudWatchEventsModel.createRulesWithTarget(event.Repository, branchName, event.Branch, "start", event.StartupSchedules)
 	if err != nil {
 		return err
 	}
@@ -45,20 +45,20 @@ func (CloudWatchModel *CloudWatchModel) UpdateCloudWatchEvents(event types.Event
 	// Shutdown schedules
 	helper.Logger.Log(errors.New("Shutdown schedules: "+fmt.Sprint(event.ShutdownSchedules)), map[string]string{"module": "model/UpdateCloudWatchEvents", "operation": "shutdownSchedules"}, 4)
 
-	err = removeRulesWithTarget(event.Repository, branchName, "stop")
+	err = CloudWatchEventsModel.removeRulesWithTarget(event.Repository, branchName, "stop")
 	if err != nil {
 		return err
 	}
 
-	err = createRulesWithTarget(event.Repository, branchName, event.Branch, "stop", event.ShutdownSchedules)
+	err = CloudWatchEventsModel.createRulesWithTarget(event.Repository, branchName, event.Branch, "stop", event.ShutdownSchedules)
 
 	return err
 }
 
-func (CloudWatchModel *CloudWatchModel) removeRulesWithTarget(repository, branch, action string) error {
+func (CloudWatchEventsModel *CloudWatchEventsModel) removeRulesWithTarget(repository, branch, action string) error {
 	helper.Logger.Log(errors.New("Removing "+action+" schedules for repo = "+repository+" and branch = "+branch), map[string]string{"module": "model/removeRuleWithTarget", "operation": "info/removeRules"}, 3)
 
-	client := getCloudWatchEventsClient()
+	client := CloudWatchEventsModel.CloudWatchEventsAPI
 
 	result, err := client.ListRules(nil)
 	if err != nil {
@@ -115,10 +115,10 @@ func (CloudWatchModel *CloudWatchModel) removeRulesWithTarget(repository, branch
 
 // createRulesWithTarget creates a new CloudWatcheEvents rule with the Scheduler Lambda Funktion as target.
 // If an error occurs the error gets logged and the returned.
-func (CloudWatchModel *CloudWatchModel) createRulesWithTarget(repository, branch, branchRaw, action string, schedule []types.TimeSchedule) error {
+func (CloudWatchEventsModel *CloudWatchEventsModel) createRulesWithTarget(repository, branch, branchRaw, action string, schedule []types.TimeSchedule) error {
 	helper.Logger.Log(errors.New("Creating "+action+" schedules for repo = "+repository+" and branch = "+branchRaw), map[string]string{"module": "model/createRulesWithTarget", "operation": "info/createRules"}, 3)
 
-	client := getCloudWatchEventsClient()
+	client := CloudWatchEventsModel.CloudWatchEventsAPI
 
 	for i := range schedule {
 		ruleName := "as-" + action + "-" + repository + "-" + branch + "-" + fmt.Sprint(rand.Intn(9999))

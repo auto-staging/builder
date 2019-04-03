@@ -1,18 +1,18 @@
 package model
 
 import (
-	"github.com/aws/aws-sdk-go/service/cloudwatch/cloudwatchiface"
+	"github.com/aws/aws-sdk-go/service/cloudwatchevents/cloudwatcheventsiface"
 )
 
-type CloudWatchModelAPI interface {
+type CloudWatchEventsModelAPI interface {
 }
 
-type CloudWatchModel struct {
-	cloudwatchiface.CloudWatchAPI
+type CloudWatchEventsModel struct {
+	cloudwatcheventsiface.CloudWatchEventsAPI
 }
 
-func NewCloudWatchModel(svc cloudwatchiface.CloudWatchAPI) *CloudWatchModel {
-	return &CloudWatchModel{
-		CloudWatchAPI: svc,
+func NewCloudWatchEventsModel(svc cloudwatcheventsiface.CloudWatchEventsAPI) *CloudWatchEventsModel {
+	return &CloudWatchEventsModel{
+		CloudWatchEventsAPI: svc,
 	}
 }

@@ -14,7 +14,7 @@
   version = "v1.8.2"
 
 [[projects]]
-  digest = "1:1635228a2722434c4366a6c8cda5e67a8bcf3f1467fcb611907e4c99d97b6409"
+  digest = "1:1011eb36b89499e15b684a8e9a3757ead4874ad8905fd49cbf6f857761e25633"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -49,6 +49,7 @@
     "private/protocol/rest",
     "private/protocol/xml/xmlutil",
     "service/cloudwatchevents",
+    "service/cloudwatchevents/cloudwatcheventsiface",
     "service/codebuild",
     "service/dynamodb",
     "service/dynamodb/dynamodbattribute",
@@ -134,6 +135,7 @@
     "github.com/aws/aws-sdk-go/aws/request",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/cloudwatchevents",
+    "github.com/aws/aws-sdk-go/service/cloudwatchevents/cloudwatcheventsiface",
     "github.com/aws/aws-sdk-go/service/codebuild",
     "github.com/aws/aws-sdk-go/service/dynamodb",
     "github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute",

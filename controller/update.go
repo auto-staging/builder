@@ -63,8 +63,9 @@ func UpdateResultController(event types.Event) (string, error) {
 // UpdateCloudWatchEventController is the controller for the UPDATE_SCHEDULE action.
 // It calls the function to update all CloudWatchEvents rules for the Environment.
 func UpdateCloudWatchEventController(event types.Event) (string, error) {
+	cloudWatchEventsModel := model.NewCloudWatchEventsModel(getCloudWatchEventsClient())
 
-	err := model.UpdateCloudWatchEvents(event)
+	err := cloudWatchEventsModel.UpdateCloudWatchEvents(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
