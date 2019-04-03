@@ -12,9 +12,9 @@ import (
 // DeleteController is the controller function for the DELETE action.
 // First the status of the Environment gets checked, if the status is "running", "stopped", "initiating failed", "destroyed failed"
 // the CodBuild Job gets adapted to delete the Environment and then triggered.
-func DeleteController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
-	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
+func (ServiceBaseController *ServiceBaseController) DeleteController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
 
 	status := types.Status{}
 	err := databaseModel.GetStatusForEnvironment(event, &status)
@@ -51,8 +51,8 @@ func DeleteController(event types.Event) (string, error) {
 
 // DeleteCloudWatchEventController is the controller function for the DELETE_SCHEDULE action.
 // It calls the function to delete all CloudWatchEvents rules for the Environment.
-func DeleteCloudWatchEventController(event types.Event) (string, error) {
-	cloudWatchEventsModel := model.NewCloudWatchEventsModel(getCloudWatchEventsClient())
+func (ServiceBaseController *ServiceBaseController) DeleteCloudWatchEventController(event types.Event) (string, error) {
+	cloudWatchEventsModel := model.NewCloudWatchEventsModel(ServiceBaseController.CloudWatchEventsAPI)
 
 	err := cloudWatchEventsModel.DeleteCloudWatchEvents(event)
 	if err != nil {
@@ -64,9 +64,9 @@ func DeleteCloudWatchEventController(event types.Event) (string, error) {
 
 // DeleteResultController is the controller function for the RESULT_DESTROY action.
 // The status of the Environment gets set according to the result of the CodeBuild Job and the CodeBuild Job and Environment get removed.
-func DeleteResultController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
-	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
+func (ServiceBaseController *ServiceBaseController) DeleteResultController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
 
 	err := databaseModel.SetStatusAfterDeletion(event)
 	if err != nil {

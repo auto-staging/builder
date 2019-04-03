@@ -11,9 +11,9 @@ import (
 
 // CreateController is the controller for the CREATE action.
 // First the status of the Environment gets checked, if the status is "pending" the CodBuild Job gets created and then triggered.
-func CreateController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
-	codeBuildModel := model.NewCodeBuildModel(getCodeBuildClient())
+func (ServiceBaseController *ServiceBaseController) CreateController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
+	codeBuildModel := model.NewCodeBuildModel(ServiceBaseController.CodeBuildAPI)
 
 	status := types.Status{}
 	err := databaseModel.GetStatusForEnvironment(event, &status)
@@ -50,8 +50,8 @@ func CreateController(event types.Event) (string, error) {
 
 // CreateResultController is the controller for the RESULT_CREATE action.
 // The status of the Environment gets set according to the result of the CodeBuild Job.
-func CreateResultController(event types.Event) (string, error) {
-	databaseModel := model.NewDatabaseModel(getDynamoDbClient())
+func (ServiceBaseController *ServiceBaseController) CreateResultController(event types.Event) (string, error) {
+	databaseModel := model.NewDatabaseModel(ServiceBaseController.DynamoDBAPI)
 
 	err := databaseModel.SetStatusAfterCreation(event)
 	if err != nil {
