@@ -51,7 +51,6 @@ func DeleteController(event types.Event) (string, error) {
 // DeleteCloudWatchEventController is the controller function for the DELETE_SCHEDULE action.
 // It calls the function to delete all CloudWatchEvents rules for the Environment.
 func DeleteCloudWatchEventController(event types.Event) (string, error) {
-
 	cloudWatchEventsModel := model.NewCloudWatchEventsModel(getCloudWatchEventsClient())
 
 	err := cloudWatchEventsModel.DeleteCloudWatchEvents(event)
