@@ -14,6 +14,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
+// SetStatusForEnvironment updates the status of an environment (which gets identified by branch and repository from the event
+// parameter) in DynamoDB with the status given as parameter
 func (DynamoDBModel *DynamoDBModel) SetStatusForEnvironment(event types.Event, status string) error {
 	svc := DynamoDBModel.DynamoDBAPI
 
