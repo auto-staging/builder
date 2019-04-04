@@ -20,6 +20,9 @@ jobs:
       script:
         - make prepare
         - go test ./... -coverprofile c.out -v
+
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     
     - stage: release
       language: node_js
