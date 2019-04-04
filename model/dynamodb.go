@@ -1,22 +1,28 @@
 package model
 
 import (
-	"os"
-
-	"github.com/auto-staging/builder/helper"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/auto-staging/builder/types"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
-func getDynamoDbClient() *dynamodb.DynamoDB {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(os.Getenv("AWS_REGION"))},
-	)
+// DynamoDBModelAPI is an interface including all DynamoDB model functions
+type DynamoDBModelAPI interface {
+	SetStatusAfterCreation(event types.Event) error
+	SetStatusAfterDeletion(event types.Event) error
+	DeleteEnvironment(event types.Event) error
+	GetStatusForEnvironment(event types.Event, status *types.Status) error
+	SetStatusForEnvironment(event types.Event, status string) error
+	SetStatusAfterUpdate(event types.Event) error
+}
 
-	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "model/getDynamoDbClient", "operation": "aws/session"}, 0)
+// DynamoDBModel is a struct including the AWS SDK DynamoDB interface, all DynamoDB model functions are called on this struct and the included AWS SDK DynamoDB service
+type DynamoDBModel struct {
+	dynamodbiface.DynamoDBAPI
+}
+
+// NewDynamoDBModel takes the AWS SDK DynamoDB interface as parameter and returns the pointer to an DynamoDBModel struct, on which all DynamoDB model functions can be called
+func NewDynamoDBModel(svc dynamodbiface.DynamoDBAPI) *DynamoDBModel {
+	return &DynamoDBModel{
+		DynamoDBAPI: svc,
 	}
-
-	return dynamodb.New(sess)
 }

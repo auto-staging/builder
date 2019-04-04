@@ -14,8 +14,10 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-func setStatusForEnvironment(event types.Event, status string) error {
-	svc := getDynamoDbClient()
+// SetStatusForEnvironment updates the status of an environment (which gets identified by branch and repository from the event
+// parameter) in DynamoDB with the status given as parameter
+func (DynamoDBModel *DynamoDBModel) SetStatusForEnvironment(event types.Event, status string) error {
+	svc := DynamoDBModel.DynamoDBAPI
 
 	updateStruct := types.StatusUpdate{
 		Status: status,
@@ -57,20 +59,11 @@ func setStatusForEnvironment(event types.Event, status string) error {
 
 // AdaptCodeBildJobForUpdate adapts the CodeBuild Job and buildspec with the updated Environment configuration (EnvironmentVariables).
 // If an error occurs the error gets logged and the returned.
-func AdaptCodeBildJobForUpdate(event types.Event) error {
-	err := setStatusForEnvironment(event, "updating")
-	if err != nil {
-		return err
-	}
-
+func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForUpdate(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "regex/compile"}, 0)
-		errStatus := setStatusForEnvironment(event, "updating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 
@@ -92,6 +85,11 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		Type:  aws.String("PLAINTEXT"),
 		Value: aws.String(event.Repository),
 	})
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_random"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(getRandomValueForBranch(event.Branch)),
+	})
 
 	for _, environmentVariable := range event.EnvironmentVariables {
 		envVars = append(envVars, &codebuild.EnvironmentVariable{
@@ -101,7 +99,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 		})
 	}
 
-	client := getCodeBuildClient()
+	client := CodeBuildModel.CodeBuildAPI
 	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
 		Names: []*string{
 			aws.String("auto-staging-" + event.Repository + "-" + branchName),
@@ -109,10 +107,6 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	})
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "codebuild/batchGetProjects"}, 0)
-		errStatus := setStatusForEnvironment(event, "updating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 	oldProject := oldProjects.Projects[0]
@@ -134,10 +128,6 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	marshaledBuildspec, err := yaml.Marshal(buildspec)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "yaml/marshal"}, 0)
-		errStatus := setStatusForEnvironment(event, "updating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 	helper.Logger.Log(errors.New(fmt.Sprint(string(marshaledBuildspec))), map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "buildspec"}, 4)
@@ -163,10 +153,6 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 	})
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptCodeBildJobForUpdate", "operation": "codebuild/update"}, 0)
-		errStatus := setStatusForEnvironment(event, "updating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 
@@ -176,7 +162,7 @@ func AdaptCodeBildJobForUpdate(event types.Event) error {
 // SetStatusAfterUpdate checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
 // gets set to "running" otherwise it gets set to "updating failed".
 // If an error occurs the error gets logged and the returned.
-func SetStatusAfterUpdate(event types.Event) error {
+func (DynamoDBModel *DynamoDBModel) SetStatusAfterUpdate(event types.Event) error {
 
 	status := "updating failed"
 
@@ -184,5 +170,5 @@ func SetStatusAfterUpdate(event types.Event) error {
 		status = "running"
 	}
 
-	return setStatusForEnvironment(event, status)
+	return DynamoDBModel.SetStatusForEnvironment(event, status)
 }

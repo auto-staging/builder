@@ -1,22 +1,24 @@
 package model
 
 import (
-	"os"
-
-	"github.com/auto-staging/builder/helper"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-
-	"github.com/aws/aws-sdk-go/service/cloudwatchevents"
+	"github.com/auto-staging/builder/types"
+	"github.com/aws/aws-sdk-go/service/cloudwatchevents/cloudwatcheventsiface"
 )
 
-func getCloudWatchEventsClient() *cloudwatchevents.CloudWatchEvents {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(os.Getenv("AWS_REGION"))},
-	)
-	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "model/getCloudWatchClient", "operation": "aws/session"}, 0)
-	}
+// CloudWatchEventsModelAPI is an interface including all CloudWatchEvents model functions
+type CloudWatchEventsModelAPI interface {
+	UpdateCloudWatchEvents(event types.Event) error
+	DeleteCloudWatchEvents(event types.Event) error
+}
 
-	return cloudwatchevents.New(sess)
+// CloudWatchEventsModel is a struct including the AWS SDK CloudWatchEvents interface, all CloudWatchEvents model functions are called on this struct and the included AWS SDK CloudWatchEvents service
+type CloudWatchEventsModel struct {
+	cloudwatcheventsiface.CloudWatchEventsAPI
+}
+
+// NewCloudWatchEventsModel takes the AWS SDK CloudWatchEvents interface as parameter and returns the pointer to an CloudWatchEventsModel struct, on which all CloudWatchEvents model functions can be called
+func NewCloudWatchEventsModel(svc cloudwatcheventsiface.CloudWatchEventsAPI) *CloudWatchEventsModel {
+	return &CloudWatchEventsModel{
+		CloudWatchEventsAPI: svc,
+	}
 }

@@ -5,16 +5,17 @@ import (
 	"fmt"
 
 	"github.com/auto-staging/builder/helper"
-	"github.com/auto-staging/builder/model"
 	"github.com/auto-staging/builder/types"
 )
 
 // CreateController is the controller for the CREATE action.
 // First the status of the Environment gets checked, if the status is "pending" the CodBuild Job gets created and then triggered.
-func CreateController(event types.Event) (string, error) {
+func (ServiceBaseController *ServiceBaseController) CreateController(event types.Event) (string, error) {
+	dynamoDBModel := ServiceBaseController.DynamoDBModelAPI
+	codeBuildModel := ServiceBaseController.CodeBuildModelAPI
 
 	status := types.Status{}
-	err := model.GetStatusForEnvironment(event, &status)
+	err := dynamoDBModel.GetStatusForEnvironment(event, &status)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -24,12 +25,21 @@ func CreateController(event types.Event) (string, error) {
 		return fmt.Sprint("{\"message\" : \"can't create environment in current status\"}"), err
 	}
 
-	err = model.CreateCodeBuildJob(event)
+	err = dynamoDBModel.SetStatusForEnvironment(event, "initiating")
 	if err != nil {
+		return "", err
+	}
+
+	err = codeBuildModel.CreateCodeBuildJob(event)
+	if err != nil {
+		errStatus := dynamoDBModel.SetStatusForEnvironment(event, "initiating failed")
+		if errStatus != nil {
+			return "", errStatus
+		}
 		return fmt.Sprintf(""), err
 	}
 
-	err = model.TriggerCodeBuild(event)
+	err = codeBuildModel.TriggerCodeBuild(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}
@@ -39,9 +49,10 @@ func CreateController(event types.Event) (string, error) {
 
 // CreateResultController is the controller for the RESULT_CREATE action.
 // The status of the Environment gets set according to the result of the CodeBuild Job.
-func CreateResultController(event types.Event) (string, error) {
+func (ServiceBaseController *ServiceBaseController) CreateResultController(event types.Event) (string, error) {
+	dynamoDBModel := ServiceBaseController.DynamoDBModelAPI
 
-	err := model.SetStatusAfterCreation(event)
+	err := dynamoDBModel.SetStatusAfterCreation(event)
 	if err != nil {
 		return fmt.Sprintf(""), err
 	}

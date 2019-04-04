@@ -14,20 +14,11 @@ import (
 
 // CreateCodeBuildJob creates the CodebuildJob via AWS SDK with the configuration defined for the Environment.
 // If an error occurs the error gets logged and the returned.
-func CreateCodeBuildJob(event types.Event) error {
-	err := setStatusForEnvironment(event, "initiating")
-	if err != nil {
-		return err
-	}
-
+func (CodeBuildModel *CodeBuildModel) CreateCodeBuildJob(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "regex/compile"}, 0)
-		errStatus := setStatusForEnvironment(event, "initiating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
@@ -48,6 +39,11 @@ func CreateCodeBuildJob(event types.Event) error {
 		Name:  aws.String("TF_VAR_repository"),
 		Type:  aws.String("PLAINTEXT"),
 		Value: aws.String(event.Repository),
+	})
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_random"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(getRandomValueForBranch(event.Branch)),
 	})
 
 	for _, environmentVariable := range event.EnvironmentVariables {
@@ -76,10 +72,6 @@ func CreateCodeBuildJob(event types.Event) error {
 	res, err := yaml.Marshal(buildspec)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "yaml/marshal"}, 0)
-		errStatus := setStatusForEnvironment(event, "initiating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 
@@ -105,14 +97,10 @@ func CreateCodeBuildJob(event types.Event) error {
 		},
 	}
 
-	client := getCodeBuildClient()
+	client := CodeBuildModel.CodeBuildAPI
 	_, err = client.CreateProject(&createInput)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/CreateCodeBuildJob", "operation": "codebuild/create"}, 0)
-		errStatus := setStatusForEnvironment(event, "initiating failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 
@@ -122,7 +110,7 @@ func CreateCodeBuildJob(event types.Event) error {
 // SetStatusAfterCreation checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
 // gets set to "running" otherwise it gets set to "initating failed".
 // If an error occurs the error gets logged and the returned.
-func SetStatusAfterCreation(event types.Event) error {
+func (DynamoDBModel *DynamoDBModel) SetStatusAfterCreation(event types.Event) error {
 
 	status := "initiating failed"
 
@@ -130,5 +118,5 @@ func SetStatusAfterCreation(event types.Event) error {
 		status = "running"
 	}
 
-	return setStatusForEnvironment(event, status)
+	return DynamoDBModel.SetStatusForEnvironment(event, status)
 }
