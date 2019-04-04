@@ -40,6 +40,11 @@ func (CodeBuildModel *CodeBuildModel) CreateCodeBuildJob(event types.Event) erro
 		Type:  aws.String("PLAINTEXT"),
 		Value: aws.String(event.Repository),
 	})
+	envVars = append(envVars, &codebuild.EnvironmentVariable{
+		Name:  aws.String("TF_VAR_random"),
+		Type:  aws.String("PLAINTEXT"),
+		Value: aws.String(getRandomValueForBranch(event.Branch)),
+	})
 
 	for _, environmentVariable := range event.EnvironmentVariables {
 		envVars = append(envVars, &codebuild.EnvironmentVariable{
