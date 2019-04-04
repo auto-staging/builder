@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/auto-staging/builder/compare/1.1.2...1.2.0) (2019-04-04)
+
+
+### Features
+
+* added new random default variable for AWS ressoource names, this allows environments for longer branch names - fixes [#9](https://github.com/auto-staging/builder/issues/9) ([24ba13b](https://github.com/auto-staging/builder/commit/24ba13b))
+
 ## [1.1.2](https://github.com/auto-staging/builder/compare/1.1.1...1.1.2) (2019-04-01)
 
 
