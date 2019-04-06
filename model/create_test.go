@@ -7,6 +7,8 @@ import (
 	"github.com/auto-staging/builder/mocks"
 	"github.com/auto-staging/builder/types"
 	"github.com/aws/aws-sdk-go/service/codebuild"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/pkg/errors"
 
 	"github.com/stretchr/testify/assert"
@@ -93,4 +95,72 @@ func TestCreateCodeBuildJobAWSError(t *testing.T) {
 
 	assert.Error(t, err, "Expected error")
 	assert.Equal(t, err, awsError)
+}
+
+func TestSetStatusAfterCreationSuccess(t *testing.T) {
+	svc := new(mocks.DynamoDBAPI)
+	event := types.Event{
+		Branch:                "testBranch",
+		Repository:            "testRepo",
+		InfrastructureRepoURL: "testUrl",
+		Success:               1,
+	}
+
+	checkParameters := func(input *dynamodb.UpdateItemInput) error {
+		expressionAttributeValues := input.ExpressionAttributeValues
+		updateStruct := types.StatusUpdate{}
+
+		dynamodbattribute.UnmarshalMap(expressionAttributeValues, &updateStruct)
+
+		if updateStruct.Status != "running" {
+			t.Error("Exptected new status value to be running, was " + updateStruct.Status)
+			t.FailNow()
+			return errors.New("")
+		}
+		return nil
+	}
+
+	svc.On("UpdateItem", mock.AnythingOfType("*dynamodb.UpdateItemInput")).Return(nil, checkParameters)
+
+	dynamoDBModel := DynamoDBModel{
+		DynamoDBAPI: svc,
+	}
+
+	err := dynamoDBModel.SetStatusAfterCreation(event)
+
+	assert.Nil(t, err, "Expected no error")
+}
+
+func TestSetStatusAfterCreationFailed(t *testing.T) {
+	svc := new(mocks.DynamoDBAPI)
+	event := types.Event{
+		Branch:                "testBranch",
+		Repository:            "testRepo",
+		InfrastructureRepoURL: "testUrl",
+		Success:               0,
+	}
+
+	checkParameters := func(input *dynamodb.UpdateItemInput) error {
+		expressionAttributeValues := input.ExpressionAttributeValues
+		updateStruct := types.StatusUpdate{}
+
+		dynamodbattribute.UnmarshalMap(expressionAttributeValues, &updateStruct)
+
+		if updateStruct.Status != "initiating failed" {
+			t.Error("Exptected new status value to be initiating failed, was " + updateStruct.Status)
+			t.FailNow()
+			return errors.New("")
+		}
+		return nil
+	}
+
+	svc.On("UpdateItem", mock.AnythingOfType("*dynamodb.UpdateItemInput")).Return(nil, checkParameters)
+
+	dynamoDBModel := DynamoDBModel{
+		DynamoDBAPI: svc,
+	}
+
+	err := dynamoDBModel.SetStatusAfterCreation(event)
+
+	assert.Nil(t, err, "Expected no error")
 }
