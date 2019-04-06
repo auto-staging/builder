@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/auto-staging/builder/compare/1.2.0...1.2.1) (2019-04-06)
+
+
+### Bug Fixes
+
+* reusing old random value on environment update to prevent a Terraform rebuild of the whole infrastructure ([521a3e7](https://github.com/auto-staging/builder/commit/521a3e7))
+
 # [1.2.0](https://github.com/auto-staging/builder/compare/1.1.2...1.2.0) (2019-04-04)
 
 
