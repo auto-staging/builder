@@ -85,11 +85,6 @@ func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForUpdate(event types.Even
 		Type:  aws.String("PLAINTEXT"),
 		Value: aws.String(event.Repository),
 	})
-	envVars = append(envVars, &codebuild.EnvironmentVariable{
-		Name:  aws.String("TF_VAR_random"),
-		Type:  aws.String("PLAINTEXT"),
-		Value: aws.String(getRandomValueForBranch(event.Branch)),
-	})
 
 	for _, environmentVariable := range event.EnvironmentVariables {
 		envVars = append(envVars, &codebuild.EnvironmentVariable{
@@ -110,6 +105,13 @@ func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForUpdate(event types.Even
 		return err
 	}
 	oldProject := oldProjects.Projects[0]
+
+	// Reuse old TF_VAR_random value
+	for _, oldEnvironmentVar := range oldProject.Environment.EnvironmentVariables {
+		if *oldEnvironmentVar.Name == "TF_VAR_random" {
+			envVars = append(envVars, oldEnvironmentVar)
+		}
+	}
 
 	buildspec := types.Buildspec{
 		Version: "0.2",

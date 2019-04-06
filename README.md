@@ -125,18 +125,9 @@
 
 ## Requirements
 
-- Golang
-- Go dep
+- Golang > 1.11
 
 ## Usage
-
-### Install dependencies
-
-Go dep must be installed
-
-```bash
-make prepare
-```
 
 ### Run application
 

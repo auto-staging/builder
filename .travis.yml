@@ -18,7 +18,7 @@ jobs:
         - ./cc-test-reporter before-build
 
       script:
-        - make prepare
+        - export GO111MODULE=on
         - go test ./... -coverprofile c.out -v
 
       after_script:
