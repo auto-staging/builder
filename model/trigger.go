@@ -11,8 +11,7 @@ import (
 
 // TriggerCodeBuild starts the CodeBuild Job for the Environment specified in Event struct.
 // If an error occurs the error gets logged and the returned.
-func TriggerCodeBuild(event types.Event) error {
-
+func (CodeBuildModel *CodeBuildModel) TriggerCodeBuild(event types.Event) error {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/TriggerCodeBuild", "operation": "regex/compile"}, 0)
@@ -20,7 +19,7 @@ func TriggerCodeBuild(event types.Event) error {
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
-	service := getCodeBuildClient()
+	service := CodeBuildModel.CodeBuildAPI
 
 	_, err = service.StartBuild(&codebuild.StartBuildInput{
 		ProjectName: aws.String("auto-staging-" + event.Repository + "-" + branchName),

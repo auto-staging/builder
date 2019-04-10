@@ -1,21 +1,27 @@
 package model
 
 import (
-	"os"
-
-	"github.com/auto-staging/builder/helper"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/codebuild"
+	"github.com/auto-staging/builder/types"
+	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
 )
 
-func getCodeBuildClient() *codebuild.CodeBuild {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(os.Getenv("AWS_REGION"))},
-	)
-	if err != nil {
-		helper.Logger.Log(err, map[string]string{"module": "model/getCodeBuildClient", "operation": "aws/session"}, 0)
-	}
+// CodeBuildModelAPI is an interface including all CodeBuild model functions
+type CodeBuildModelAPI interface {
+	CreateCodeBuildJob(event types.Event) error
+	DeleteCodeBuildJob(event types.Event) error
+	AdaptCodeBildJobForDelete(event types.Event) error
+	TriggerCodeBuild(event types.Event) error
+	AdaptCodeBildJobForUpdate(event types.Event) error
+}
 
-	return codebuild.New(sess)
+// CodeBuildModel is a struct including the AWS SDK CodeBuild interface, all CodeBuild model functions are called on this struct and the included AWS SDK CodeBuild service
+type CodeBuildModel struct {
+	codebuildiface.CodeBuildAPI
+}
+
+// NewCodeBuildModel takes the AWS SDK CodeBuild interface as parameter and returns the pointer to an CodeBuildModel struct, on which all CodeBuild model functions can be called
+func NewCodeBuildModel(svc codebuildiface.CodeBuildAPI) *CodeBuildModel {
+	return &CodeBuildModel{
+		CodeBuildAPI: svc,
+	}
 }

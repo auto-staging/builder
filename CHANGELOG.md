@@ -1,3 +1,31 @@
+## [1.2.1](https://github.com/auto-staging/builder/compare/1.2.0...1.2.1) (2019-04-06)
+
+
+### Bug Fixes
+
+* reusing old random value on environment update to prevent a Terraform rebuild of the whole infrastructure ([521a3e7](https://github.com/auto-staging/builder/commit/521a3e7))
+
+# [1.2.0](https://github.com/auto-staging/builder/compare/1.1.2...1.2.0) (2019-04-04)
+
+
+### Features
+
+* added new random default variable for AWS ressoource names, this allows environments for longer branch names - fixes [#9](https://github.com/auto-staging/builder/issues/9) ([24ba13b](https://github.com/auto-staging/builder/commit/24ba13b))
+
+## [1.1.2](https://github.com/auto-staging/builder/compare/1.1.1...1.1.2) (2019-04-01)
+
+
+### Bug Fixes
+
+* replaced test docker image with official auto staging image ([72a3c69](https://github.com/auto-staging/builder/commit/72a3c69))
+
+## [1.1.1](https://github.com/auto-staging/builder/compare/1.1.0...1.1.1) (2019-03-28)
+
+
+### Bug Fixes
+
+* compile binary for linux ([24a80d9](https://github.com/auto-staging/builder/commit/24a80d9))
+
 # [1.1.0](https://github.com/auto-staging/builder/compare/1.0.2...1.1.0) (2019-02-22)
 
 

@@ -15,8 +15,8 @@ import (
 
 // DeleteCodeBuildJob removes the CodeBuild Job for the Environment specified in the Event struct.
 // If an error occurs the error gets logged and the returned.
-func DeleteCodeBuildJob(event types.Event) error {
-	client := getCodeBuildClient()
+func (CodeBuildModel *CodeBuildModel) DeleteCodeBuildJob(event types.Event) error {
+	client := CodeBuildModel.CodeBuildAPI
 
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
@@ -37,25 +37,16 @@ func DeleteCodeBuildJob(event types.Event) error {
 
 // AdaptCodeBildJobForDelete adapts the CodeBuild buildspec to delete an Environment infrastructure.
 // If an error occurs the error gets logged and the returned.
-func AdaptCodeBildJobForDelete(event types.Event) error {
-	err := setStatusForEnvironment(event, "destroying")
-	if err != nil {
-		return err
-	}
-
+func (CodeBuildModel *CodeBuildModel) AdaptCodeBildJobForDelete(event types.Event) error {
 	// Adapt branch name to only contain allowed characters for CodeBuild name
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "regex/compile"}, 0)
-		errStatus := setStatusForEnvironment(event, "destroying failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 	branchName := reg.ReplaceAllString(event.Branch, "-")
 
-	client := getCodeBuildClient()
+	client := CodeBuildModel.CodeBuildAPI
 
 	oldProjects, err := client.BatchGetProjects(&codebuild.BatchGetProjectsInput{
 		Names: []*string{
@@ -65,10 +56,6 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "aws/batchGetProjects"}, 0)
-		errStatus := setStatusForEnvironment(event, "destroying failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 
@@ -91,10 +78,6 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	marshaledBuildspec, err := yaml.Marshal(buildspec)
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "yaml/marshal"}, 0)
-		errStatus := setStatusForEnvironment(event, "destroying failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 	helper.Logger.Log(errors.New(fmt.Sprint(string(marshaledBuildspec))), map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "buildspec"}, 4)
@@ -120,10 +103,6 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 	})
 	if err != nil {
 		helper.Logger.Log(err, map[string]string{"module": "model/AdaptingCodeBildJobForDelete", "operation": "codebuild/update"}, 0)
-		errStatus := setStatusForEnvironment(event, "destroying failed")
-		if errStatus != nil {
-			return errStatus
-		}
 		return err
 	}
 
@@ -133,7 +112,7 @@ func AdaptCodeBildJobForDelete(event types.Event) error {
 // SetStatusAfterDeletion checks the success variable in the event struct, which gets set in the CodeBuild Job. If success euqals 1 then the status
 // gets set to "destroyed" otherwise it gets set to "destroying failed".
 // If an error occurs the error gets logged and the returned.
-func SetStatusAfterDeletion(event types.Event) error {
+func (DynamoDBModel *DynamoDBModel) SetStatusAfterDeletion(event types.Event) error {
 
 	status := "destroying failed"
 
@@ -141,13 +120,13 @@ func SetStatusAfterDeletion(event types.Event) error {
 		status = "destroyed"
 	}
 
-	return setStatusForEnvironment(event, status)
+	return DynamoDBModel.SetStatusForEnvironment(event, status)
 }
 
 // DeleteEnvironment removes an Environment specified in the Event struct from DynamoDB.
 // If an error occurs the error gets logged and the returned.
-func DeleteEnvironment(event types.Event) error {
-	svc := getDynamoDbClient()
+func (DynamoDBModel *DynamoDBModel) DeleteEnvironment(event types.Event) error {
+	svc := DynamoDBModel.DynamoDBAPI
 
 	_, err := svc.DeleteItem(&dynamodb.DeleteItemInput{
 		TableName: aws.String("auto-staging-environments"),
