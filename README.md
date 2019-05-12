@@ -10,8 +10,6 @@
 
 ## [Documentation](docs/README.md)
 
-compiles to bin/auto-staging-builder
-
 ## License and Author
 
 Author: Jan Ritter
