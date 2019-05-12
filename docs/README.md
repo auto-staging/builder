@@ -14,10 +14,10 @@
 
 ## Usage
 
-### Run application
+### Run tests
 
 ```bash
-make run
+make tests
 ```
 
 ### Build binary
@@ -27,6 +27,12 @@ make build
 ```
 
 compiles to bin/auto-staging-builder
+
+## Request bodies
+
+### [Request bodies for CodeBuild](REQUEST-BODIES-CODEBUILD.md)
+
+### [Request bodies for CloudWatch](REQUEST-BODIES-CLOUDWATCH.md)
 
 ## License and Author
 

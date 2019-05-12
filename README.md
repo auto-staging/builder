@@ -8,23 +8,7 @@
 
 > Builder creates the CodeBuild Jobs and the CloudWatchEvents rules for the Auto Staging Environments, it also starts the CodeBuild Job.
 
-## Documentation
-
-Can be found in the /docs folder
-
-## Usage
-
-### Run tests
-
-```bash
-make tests
-```
-
-### Build binary
-
-```bash
-make build
-```
+## [Documentation](docs/README.md)
 
 compiles to bin/auto-staging-builder
 
