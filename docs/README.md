@@ -8,16 +8,16 @@
 
 > Builder creates the CodeBuild Jobs and the CloudWatchEvents rules for the Auto Staging Environments, it also starts the CodeBuild Job.
 
-## Documentation
+## Requirements
 
-Can be found in the /docs folder
+- Golang > 1.11
 
 ## Usage
 
-### Run tests
+### Run application
 
 ```bash
-make tests
+make run
 ```
 
 ### Build binary
