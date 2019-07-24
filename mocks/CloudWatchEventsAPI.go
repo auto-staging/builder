@@ -13,6 +13,474 @@ type CloudWatchEventsAPI struct {
 	mock.Mock
 }
 
+// ActivateEventSource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ActivateEventSource(_a0 *cloudwatchevents.ActivateEventSourceInput) (*cloudwatchevents.ActivateEventSourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.ActivateEventSourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ActivateEventSourceInput) *cloudwatchevents.ActivateEventSourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ActivateEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ActivateEventSourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ActivateEventSourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ActivateEventSourceRequest(_a0 *cloudwatchevents.ActivateEventSourceInput) (*request.Request, *cloudwatchevents.ActivateEventSourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ActivateEventSourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.ActivateEventSourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ActivateEventSourceInput) *cloudwatchevents.ActivateEventSourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.ActivateEventSourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ActivateEventSourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) ActivateEventSourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.ActivateEventSourceInput, _a2 ...request.Option) (*cloudwatchevents.ActivateEventSourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.ActivateEventSourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.ActivateEventSourceInput, ...request.Option) *cloudwatchevents.ActivateEventSourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ActivateEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.ActivateEventSourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// CreateEventBus provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) CreateEventBus(_a0 *cloudwatchevents.CreateEventBusInput) (*cloudwatchevents.CreateEventBusOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.CreateEventBusOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.CreateEventBusInput) *cloudwatchevents.CreateEventBusOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.CreateEventBusOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.CreateEventBusInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// CreateEventBusRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) CreateEventBusRequest(_a0 *cloudwatchevents.CreateEventBusInput) (*request.Request, *cloudwatchevents.CreateEventBusOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.CreateEventBusInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.CreateEventBusOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.CreateEventBusInput) *cloudwatchevents.CreateEventBusOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.CreateEventBusOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// CreateEventBusWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) CreateEventBusWithContext(_a0 context.Context, _a1 *cloudwatchevents.CreateEventBusInput, _a2 ...request.Option) (*cloudwatchevents.CreateEventBusOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.CreateEventBusOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.CreateEventBusInput, ...request.Option) *cloudwatchevents.CreateEventBusOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.CreateEventBusOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.CreateEventBusInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// CreatePartnerEventSource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) CreatePartnerEventSource(_a0 *cloudwatchevents.CreatePartnerEventSourceInput) (*cloudwatchevents.CreatePartnerEventSourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.CreatePartnerEventSourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.CreatePartnerEventSourceInput) *cloudwatchevents.CreatePartnerEventSourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.CreatePartnerEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.CreatePartnerEventSourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// CreatePartnerEventSourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) CreatePartnerEventSourceRequest(_a0 *cloudwatchevents.CreatePartnerEventSourceInput) (*request.Request, *cloudwatchevents.CreatePartnerEventSourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.CreatePartnerEventSourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.CreatePartnerEventSourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.CreatePartnerEventSourceInput) *cloudwatchevents.CreatePartnerEventSourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.CreatePartnerEventSourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// CreatePartnerEventSourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) CreatePartnerEventSourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.CreatePartnerEventSourceInput, _a2 ...request.Option) (*cloudwatchevents.CreatePartnerEventSourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.CreatePartnerEventSourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.CreatePartnerEventSourceInput, ...request.Option) *cloudwatchevents.CreatePartnerEventSourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.CreatePartnerEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.CreatePartnerEventSourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DeactivateEventSource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DeactivateEventSource(_a0 *cloudwatchevents.DeactivateEventSourceInput) (*cloudwatchevents.DeactivateEventSourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.DeactivateEventSourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DeactivateEventSourceInput) *cloudwatchevents.DeactivateEventSourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DeactivateEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DeactivateEventSourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DeactivateEventSourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DeactivateEventSourceRequest(_a0 *cloudwatchevents.DeactivateEventSourceInput) (*request.Request, *cloudwatchevents.DeactivateEventSourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DeactivateEventSourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.DeactivateEventSourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DeactivateEventSourceInput) *cloudwatchevents.DeactivateEventSourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.DeactivateEventSourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// DeactivateEventSourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) DeactivateEventSourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.DeactivateEventSourceInput, _a2 ...request.Option) (*cloudwatchevents.DeactivateEventSourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.DeactivateEventSourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.DeactivateEventSourceInput, ...request.Option) *cloudwatchevents.DeactivateEventSourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DeactivateEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.DeactivateEventSourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DeleteEventBus provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DeleteEventBus(_a0 *cloudwatchevents.DeleteEventBusInput) (*cloudwatchevents.DeleteEventBusOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.DeleteEventBusOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DeleteEventBusInput) *cloudwatchevents.DeleteEventBusOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DeleteEventBusOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DeleteEventBusInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DeleteEventBusRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DeleteEventBusRequest(_a0 *cloudwatchevents.DeleteEventBusInput) (*request.Request, *cloudwatchevents.DeleteEventBusOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DeleteEventBusInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.DeleteEventBusOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DeleteEventBusInput) *cloudwatchevents.DeleteEventBusOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.DeleteEventBusOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// DeleteEventBusWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) DeleteEventBusWithContext(_a0 context.Context, _a1 *cloudwatchevents.DeleteEventBusInput, _a2 ...request.Option) (*cloudwatchevents.DeleteEventBusOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.DeleteEventBusOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.DeleteEventBusInput, ...request.Option) *cloudwatchevents.DeleteEventBusOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DeleteEventBusOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.DeleteEventBusInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DeletePartnerEventSource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DeletePartnerEventSource(_a0 *cloudwatchevents.DeletePartnerEventSourceInput) (*cloudwatchevents.DeletePartnerEventSourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.DeletePartnerEventSourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DeletePartnerEventSourceInput) *cloudwatchevents.DeletePartnerEventSourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DeletePartnerEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DeletePartnerEventSourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DeletePartnerEventSourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DeletePartnerEventSourceRequest(_a0 *cloudwatchevents.DeletePartnerEventSourceInput) (*request.Request, *cloudwatchevents.DeletePartnerEventSourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DeletePartnerEventSourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.DeletePartnerEventSourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DeletePartnerEventSourceInput) *cloudwatchevents.DeletePartnerEventSourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.DeletePartnerEventSourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// DeletePartnerEventSourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) DeletePartnerEventSourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.DeletePartnerEventSourceInput, _a2 ...request.Option) (*cloudwatchevents.DeletePartnerEventSourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.DeletePartnerEventSourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.DeletePartnerEventSourceInput, ...request.Option) *cloudwatchevents.DeletePartnerEventSourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DeletePartnerEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.DeletePartnerEventSourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // DeleteRule provides a mock function with given fields: _a0
 func (_m *CloudWatchEventsAPI) DeleteRule(_a0 *cloudwatchevents.DeleteRuleInput) (*cloudwatchevents.DeleteRuleOutput, error) {
 	ret := _m.Called(_a0)
@@ -161,6 +629,162 @@ func (_m *CloudWatchEventsAPI) DescribeEventBusWithContext(_a0 context.Context, 
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.DescribeEventBusInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DescribeEventSource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DescribeEventSource(_a0 *cloudwatchevents.DescribeEventSourceInput) (*cloudwatchevents.DescribeEventSourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.DescribeEventSourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DescribeEventSourceInput) *cloudwatchevents.DescribeEventSourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DescribeEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DescribeEventSourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DescribeEventSourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DescribeEventSourceRequest(_a0 *cloudwatchevents.DescribeEventSourceInput) (*request.Request, *cloudwatchevents.DescribeEventSourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DescribeEventSourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.DescribeEventSourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DescribeEventSourceInput) *cloudwatchevents.DescribeEventSourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.DescribeEventSourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// DescribeEventSourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) DescribeEventSourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.DescribeEventSourceInput, _a2 ...request.Option) (*cloudwatchevents.DescribeEventSourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.DescribeEventSourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.DescribeEventSourceInput, ...request.Option) *cloudwatchevents.DescribeEventSourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DescribeEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.DescribeEventSourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DescribePartnerEventSource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DescribePartnerEventSource(_a0 *cloudwatchevents.DescribePartnerEventSourceInput) (*cloudwatchevents.DescribePartnerEventSourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.DescribePartnerEventSourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DescribePartnerEventSourceInput) *cloudwatchevents.DescribePartnerEventSourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DescribePartnerEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DescribePartnerEventSourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DescribePartnerEventSourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) DescribePartnerEventSourceRequest(_a0 *cloudwatchevents.DescribePartnerEventSourceInput) (*request.Request, *cloudwatchevents.DescribePartnerEventSourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.DescribePartnerEventSourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.DescribePartnerEventSourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.DescribePartnerEventSourceInput) *cloudwatchevents.DescribePartnerEventSourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.DescribePartnerEventSourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// DescribePartnerEventSourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) DescribePartnerEventSourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.DescribePartnerEventSourceInput, _a2 ...request.Option) (*cloudwatchevents.DescribePartnerEventSourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.DescribePartnerEventSourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.DescribePartnerEventSourceInput, ...request.Option) *cloudwatchevents.DescribePartnerEventSourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.DescribePartnerEventSourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.DescribePartnerEventSourceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -403,6 +1027,318 @@ func (_m *CloudWatchEventsAPI) EnableRuleWithContext(_a0 context.Context, _a1 *c
 	return r0, r1
 }
 
+// ListEventBuses provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListEventBuses(_a0 *cloudwatchevents.ListEventBusesInput) (*cloudwatchevents.ListEventBusesOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.ListEventBusesOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListEventBusesInput) *cloudwatchevents.ListEventBusesOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListEventBusesOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListEventBusesInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListEventBusesRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListEventBusesRequest(_a0 *cloudwatchevents.ListEventBusesInput) (*request.Request, *cloudwatchevents.ListEventBusesOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListEventBusesInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.ListEventBusesOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListEventBusesInput) *cloudwatchevents.ListEventBusesOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.ListEventBusesOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ListEventBusesWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) ListEventBusesWithContext(_a0 context.Context, _a1 *cloudwatchevents.ListEventBusesInput, _a2 ...request.Option) (*cloudwatchevents.ListEventBusesOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.ListEventBusesOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.ListEventBusesInput, ...request.Option) *cloudwatchevents.ListEventBusesOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListEventBusesOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.ListEventBusesInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListEventSources provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListEventSources(_a0 *cloudwatchevents.ListEventSourcesInput) (*cloudwatchevents.ListEventSourcesOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.ListEventSourcesOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListEventSourcesInput) *cloudwatchevents.ListEventSourcesOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListEventSourcesOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListEventSourcesInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListEventSourcesRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListEventSourcesRequest(_a0 *cloudwatchevents.ListEventSourcesInput) (*request.Request, *cloudwatchevents.ListEventSourcesOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListEventSourcesInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.ListEventSourcesOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListEventSourcesInput) *cloudwatchevents.ListEventSourcesOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.ListEventSourcesOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ListEventSourcesWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) ListEventSourcesWithContext(_a0 context.Context, _a1 *cloudwatchevents.ListEventSourcesInput, _a2 ...request.Option) (*cloudwatchevents.ListEventSourcesOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.ListEventSourcesOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.ListEventSourcesInput, ...request.Option) *cloudwatchevents.ListEventSourcesOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListEventSourcesOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.ListEventSourcesInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListPartnerEventSourceAccounts provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListPartnerEventSourceAccounts(_a0 *cloudwatchevents.ListPartnerEventSourceAccountsInput) (*cloudwatchevents.ListPartnerEventSourceAccountsOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.ListPartnerEventSourceAccountsOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListPartnerEventSourceAccountsInput) *cloudwatchevents.ListPartnerEventSourceAccountsOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListPartnerEventSourceAccountsOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListPartnerEventSourceAccountsInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListPartnerEventSourceAccountsRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListPartnerEventSourceAccountsRequest(_a0 *cloudwatchevents.ListPartnerEventSourceAccountsInput) (*request.Request, *cloudwatchevents.ListPartnerEventSourceAccountsOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListPartnerEventSourceAccountsInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.ListPartnerEventSourceAccountsOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListPartnerEventSourceAccountsInput) *cloudwatchevents.ListPartnerEventSourceAccountsOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.ListPartnerEventSourceAccountsOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ListPartnerEventSourceAccountsWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) ListPartnerEventSourceAccountsWithContext(_a0 context.Context, _a1 *cloudwatchevents.ListPartnerEventSourceAccountsInput, _a2 ...request.Option) (*cloudwatchevents.ListPartnerEventSourceAccountsOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.ListPartnerEventSourceAccountsOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.ListPartnerEventSourceAccountsInput, ...request.Option) *cloudwatchevents.ListPartnerEventSourceAccountsOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListPartnerEventSourceAccountsOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.ListPartnerEventSourceAccountsInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListPartnerEventSources provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListPartnerEventSources(_a0 *cloudwatchevents.ListPartnerEventSourcesInput) (*cloudwatchevents.ListPartnerEventSourcesOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.ListPartnerEventSourcesOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListPartnerEventSourcesInput) *cloudwatchevents.ListPartnerEventSourcesOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListPartnerEventSourcesOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListPartnerEventSourcesInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListPartnerEventSourcesRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListPartnerEventSourcesRequest(_a0 *cloudwatchevents.ListPartnerEventSourcesInput) (*request.Request, *cloudwatchevents.ListPartnerEventSourcesOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListPartnerEventSourcesInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.ListPartnerEventSourcesOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListPartnerEventSourcesInput) *cloudwatchevents.ListPartnerEventSourcesOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.ListPartnerEventSourcesOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ListPartnerEventSourcesWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) ListPartnerEventSourcesWithContext(_a0 context.Context, _a1 *cloudwatchevents.ListPartnerEventSourcesInput, _a2 ...request.Option) (*cloudwatchevents.ListPartnerEventSourcesOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.ListPartnerEventSourcesOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.ListPartnerEventSourcesInput, ...request.Option) *cloudwatchevents.ListPartnerEventSourcesOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListPartnerEventSourcesOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.ListPartnerEventSourcesInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // ListRuleNamesByTarget provides a mock function with given fields: _a0
 func (_m *CloudWatchEventsAPI) ListRuleNamesByTarget(_a0 *cloudwatchevents.ListRuleNamesByTargetInput) (*cloudwatchevents.ListRuleNamesByTargetOutput, error) {
 	ret := _m.Called(_a0)
@@ -559,6 +1495,84 @@ func (_m *CloudWatchEventsAPI) ListRulesWithContext(_a0 context.Context, _a1 *cl
 	return r0, r1
 }
 
+// ListTagsForResource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListTagsForResource(_a0 *cloudwatchevents.ListTagsForResourceInput) (*cloudwatchevents.ListTagsForResourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.ListTagsForResourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListTagsForResourceInput) *cloudwatchevents.ListTagsForResourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListTagsForResourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListTagsForResourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ListTagsForResourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) ListTagsForResourceRequest(_a0 *cloudwatchevents.ListTagsForResourceInput) (*request.Request, *cloudwatchevents.ListTagsForResourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.ListTagsForResourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.ListTagsForResourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.ListTagsForResourceInput) *cloudwatchevents.ListTagsForResourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.ListTagsForResourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ListTagsForResourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) ListTagsForResourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.ListTagsForResourceInput, _a2 ...request.Option) (*cloudwatchevents.ListTagsForResourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.ListTagsForResourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.ListTagsForResourceInput, ...request.Option) *cloudwatchevents.ListTagsForResourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.ListTagsForResourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.ListTagsForResourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // ListTargetsByRule provides a mock function with given fields: _a0
 func (_m *CloudWatchEventsAPI) ListTargetsByRule(_a0 *cloudwatchevents.ListTargetsByRuleInput) (*cloudwatchevents.ListTargetsByRuleOutput, error) {
 	ret := _m.Called(_a0)
@@ -707,6 +1721,84 @@ func (_m *CloudWatchEventsAPI) PutEventsWithContext(_a0 context.Context, _a1 *cl
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.PutEventsInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// PutPartnerEvents provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) PutPartnerEvents(_a0 *cloudwatchevents.PutPartnerEventsInput) (*cloudwatchevents.PutPartnerEventsOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.PutPartnerEventsOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.PutPartnerEventsInput) *cloudwatchevents.PutPartnerEventsOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.PutPartnerEventsOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.PutPartnerEventsInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// PutPartnerEventsRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) PutPartnerEventsRequest(_a0 *cloudwatchevents.PutPartnerEventsInput) (*request.Request, *cloudwatchevents.PutPartnerEventsOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.PutPartnerEventsInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.PutPartnerEventsOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.PutPartnerEventsInput) *cloudwatchevents.PutPartnerEventsOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.PutPartnerEventsOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// PutPartnerEventsWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) PutPartnerEventsWithContext(_a0 context.Context, _a1 *cloudwatchevents.PutPartnerEventsInput, _a2 ...request.Option) (*cloudwatchevents.PutPartnerEventsOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.PutPartnerEventsOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.PutPartnerEventsInput, ...request.Option) *cloudwatchevents.PutPartnerEventsOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.PutPartnerEventsOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.PutPartnerEventsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1105,6 +2197,84 @@ func (_m *CloudWatchEventsAPI) RemoveTargetsWithContext(_a0 context.Context, _a1
 	return r0, r1
 }
 
+// TagResource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) TagResource(_a0 *cloudwatchevents.TagResourceInput) (*cloudwatchevents.TagResourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.TagResourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.TagResourceInput) *cloudwatchevents.TagResourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.TagResourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.TagResourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// TagResourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) TagResourceRequest(_a0 *cloudwatchevents.TagResourceInput) (*request.Request, *cloudwatchevents.TagResourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.TagResourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.TagResourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.TagResourceInput) *cloudwatchevents.TagResourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.TagResourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// TagResourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) TagResourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.TagResourceInput, _a2 ...request.Option) (*cloudwatchevents.TagResourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.TagResourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.TagResourceInput, ...request.Option) *cloudwatchevents.TagResourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.TagResourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.TagResourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // TestEventPattern provides a mock function with given fields: _a0
 func (_m *CloudWatchEventsAPI) TestEventPattern(_a0 *cloudwatchevents.TestEventPatternInput) (*cloudwatchevents.TestEventPatternOutput, error) {
 	ret := _m.Called(_a0)
@@ -1175,6 +2345,84 @@ func (_m *CloudWatchEventsAPI) TestEventPatternWithContext(_a0 context.Context, 
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.TestEventPatternInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// UntagResource provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) UntagResource(_a0 *cloudwatchevents.UntagResourceInput) (*cloudwatchevents.UntagResourceOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *cloudwatchevents.UntagResourceOutput
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.UntagResourceInput) *cloudwatchevents.UntagResourceOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.UntagResourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.UntagResourceInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// UntagResourceRequest provides a mock function with given fields: _a0
+func (_m *CloudWatchEventsAPI) UntagResourceRequest(_a0 *cloudwatchevents.UntagResourceInput) (*request.Request, *cloudwatchevents.UntagResourceOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*cloudwatchevents.UntagResourceInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *cloudwatchevents.UntagResourceOutput
+	if rf, ok := ret.Get(1).(func(*cloudwatchevents.UntagResourceInput) *cloudwatchevents.UntagResourceOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*cloudwatchevents.UntagResourceOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// UntagResourceWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *CloudWatchEventsAPI) UntagResourceWithContext(_a0 context.Context, _a1 *cloudwatchevents.UntagResourceInput, _a2 ...request.Option) (*cloudwatchevents.UntagResourceOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *cloudwatchevents.UntagResourceOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *cloudwatchevents.UntagResourceInput, ...request.Option) *cloudwatchevents.UntagResourceOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*cloudwatchevents.UntagResourceOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *cloudwatchevents.UntagResourceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
