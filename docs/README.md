@@ -8,7 +8,31 @@
 
 > Builder creates the CodeBuild Jobs and the CloudWatchEvents rules for the Auto Staging Environments, it also starts the CodeBuild Job.
 
-## [Documentation](docs/README.md)
+## Requirements
+
+- Golang > 1.11
+
+## Usage
+
+### Run tests
+
+```bash
+make tests
+```
+
+### Build binary
+
+```bash
+make build
+```
+
+compiles to bin/auto-staging-builder
+
+## Request bodies
+
+### [Request bodies for CodeBuild](REQUEST-BODIES-CODEBUILD.md)
+
+### [Request bodies for CloudWatch](REQUEST-BODIES-CLOUDWATCH.md)
 
 ## License and Author
 
