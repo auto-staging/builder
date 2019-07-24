@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/auto-staging/builder/compare/1.2.1...1.3.0) (2019-07-24)
+
+
+### Bug Fixes
+
+* fixed compile command for AWS lambda ([b78aa52](https://github.com/auto-staging/builder/commit/b78aa52))
+
+
+### Features
+
+* added endpoint for the tower to get the builder version information ([e982d93](https://github.com/auto-staging/builder/commit/e982d93))
+
 ## [1.2.1](https://github.com/auto-staging/builder/compare/1.2.0...1.2.1) (2019-04-06)
 
 
