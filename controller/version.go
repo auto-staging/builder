@@ -8,6 +8,8 @@ import (
 	"github.com/auto-staging/builder/types"
 )
 
+// GetVersionController is the controller for the VERSION operation.
+// It gets the version information which are stored in the binary on compilation and returns them as JSON
 func GetVersionController(event types.Event) (string, error) {
 	builderVersion := types.SingleComponentVersion{}
 	helper.GetVersionInformation(&builderVersion)

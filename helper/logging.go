@@ -33,6 +33,7 @@ func Init() {
 	}
 }
 
+// GetVersionInformation writes the version information into the given struct.
 func GetVersionInformation(componentVersion *types.SingleComponentVersion) {
 	componentVersion.Name = "builder"
 	componentVersion.Version = version
