@@ -53,6 +53,9 @@ func HandleRequest(ctx context.Context, event types.Event) (string, error) {
 	case "DELETE_SCHEDULE":
 		return serviceBaseController.DeleteCloudWatchEventController(event)
 
+	case "VERSION":
+		return controller.GetVersionController(event)
+
 	default:
 		return fmt.Sprintf("{\"message\": \"unknown operation\"}"), nil
 	}

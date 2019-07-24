@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/auto-staging/builder/types"
 	lightning "github.com/janritter/go-lightning-log"
 )
 
@@ -30,4 +31,13 @@ func Init() {
 		log.Println("ERROR - Init() - Couldn't init Logger")
 		log.Println(err)
 	}
+}
+
+// GetVersionInformation writes the version information into the given struct.
+func GetVersionInformation(componentVersion *types.SingleComponentVersion) {
+	componentVersion.Name = "builder"
+	componentVersion.Version = version
+	componentVersion.CommitHash = commitHash
+	componentVersion.Branch = branch
+	componentVersion.BuildTime = buildTime
 }
