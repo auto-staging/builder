@@ -10,6 +10,17 @@
 
 ## [Documentation](docs/README.md)
 
+## Development
+
+### Requirements
+- [Mockery](https://github.com/vektra/mockery)
+
+### Generating mocks
+Example for DynamoDB
+```
+mockery --all --dir vendor/github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface
+```
+
 ## License and Author
 
 Author: Jan Ritter
