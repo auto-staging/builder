@@ -3,7 +3,7 @@ module github.com/auto-staging/builder
 go 1.12
 
 require (
-	github.com/aws/aws-lambda-go v1.17.0
+	github.com/aws/aws-lambda-go v1.22.0
 	github.com/aws/aws-sdk-go v1.33.3
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/janritter/go-lightning-log v1.2.0
